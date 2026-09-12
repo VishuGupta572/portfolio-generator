@@ -25,5 +25,6 @@ public class ProjectResponseDTO {
     private Boolean featured;
 
     private LocalDate startDate;
-    private LocalDate endDate;
+
+
 }

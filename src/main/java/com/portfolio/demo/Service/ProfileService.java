@@ -5,6 +5,7 @@ import com.portfolio.demo.DTO.ProfilerRequestDTO;
 import com.portfolio.demo.DTO.ProfilerResponseDTO;
 import com.portfolio.demo.Entites.Profile;
 import com.portfolio.demo.Respository.ProfileRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -49,10 +50,10 @@ public class ProfileService {
     public Profile findByfullNameAndId(String fullName, Long id) {
         return profileRepository.findByfullNameAndId(fullName,id);
     }
-
+    @Transactional
     public ResponseEntity<String> DeleteByfullNameAndId(String fullName, Long id) {
-        if(profileRepository.existsById(id)){
-            profileRepository.deleteById(id);
+        if(profileRepository.existsByfullNameAndId(fullName,id)){
+            profileRepository.deleteByFullNameAndId(fullName,id);
             return ResponseEntity.ok().body("Profile Deleted successfully");
         }
         return ResponseEntity.badRequest().body("Profile not found with id: " + id);

@@ -28,8 +28,8 @@ public class ProfileController {
         return profileService.findByfullNameAndId(fullName,id);
     }
     @DeleteMapping("/DeleteByfullNameAndId/{fullName}/{id}")
-    public ResponseEntity<String> DeleteByfullNameAndId( @PathVariable Long id){
-        return profileService.DeleteByfullNameAndId(id);
+    public ResponseEntity<String> DeleteByfullNameAndId( @PathVariable Long id,@PathVariable String fullName){
+        return profileService.DeleteByfullNameAndId(fullName,id);
     }
 
 
