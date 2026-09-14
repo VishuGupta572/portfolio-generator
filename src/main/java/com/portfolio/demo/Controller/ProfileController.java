@@ -31,6 +31,10 @@ public class ProfileController {
     public ResponseEntity<String> DeleteByfullNameAndId( @PathVariable Long id,@PathVariable String fullName){
         return profileService.DeleteByfullNameAndId(fullName,id);
     }
+    @PutMapping("/upadateprofile/{id}")
+    public ProfilerResponseDTO upadateprofile(@PathVariable Long id ,@RequestBody ProfilerRequestDTO profilerRequestDTO){
+        return profileService.upadateprofile(id,profilerRequestDTO);
+    }
 
 
 }

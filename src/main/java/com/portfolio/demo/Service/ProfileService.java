@@ -60,4 +60,30 @@ public class ProfileService {
     }
 
 
+    public ProfilerResponseDTO upadateprofile(Long id, ProfilerRequestDTO profilerRequestDTO) {
+        Profile profile = profileRepository.findById(id).get();
+        profile.setFullName(profilerRequestDTO.getFullName());
+        profile.setHeadline(profilerRequestDTO.getHeadline());
+        profile.setBio(profilerRequestDTO.getBio());
+        profile.setEmail(profilerRequestDTO.getEmail());
+        profile.setPhoneNumber(profilerRequestDTO.getPhoneNumber());
+        profile.setLocation(profilerRequestDTO.getLocation());
+        profile.setResumeUrl(profilerRequestDTO.getResumeUrl());
+        profile.setGithubUrl(profilerRequestDTO.getGithubUrl());
+        profile.setLinkedinUrl(profilerRequestDTO.getLinkedinUrl());
+        Profile profiletoset = profileRepository.save(profile);
+        ProfilerResponseDTO responseDTO = new ProfilerResponseDTO();
+        responseDTO.setHeadline(profiletoset.getHeadline());
+        responseDTO.setBio(profiletoset.getBio());
+        responseDTO.setEmail(profiletoset.getEmail());
+        responseDTO.setLocation(profiletoset.getLocation());
+        responseDTO.setGithubUrl(profiletoset.getGithubUrl());
+        responseDTO.setFullName(profiletoset.getFullName());
+        responseDTO.setLinkedinUrl(profiletoset.getLinkedinUrl());
+        responseDTO.setPhoneNumber(profiletoset.getPhoneNumber());
+        responseDTO.setResumeUrl(profiletoset.getResumeUrl());
+        return responseDTO;
+
+
+    }
 }

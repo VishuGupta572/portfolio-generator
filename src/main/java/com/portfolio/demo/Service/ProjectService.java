@@ -17,6 +17,7 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
     public Project addProjects(ProjectRequestDTO projectRequestDTO) {
+
         Project project =  new Project();
         project.setDescription(projectRequestDTO.getDescription());
         project.setFeatured(projectRequestDTO.getFeatured());

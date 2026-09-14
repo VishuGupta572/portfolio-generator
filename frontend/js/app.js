@@ -42,6 +42,7 @@ function initApp() {
     setupEventListeners();
     loadAllProfiles();
     loadAllProjects();
+    loadSavedSkills();
 }
 
 /**
@@ -115,6 +116,18 @@ function setupEventListeners() {
         addProjectForm.addEventListener('submit', handleAddProject);
     }
 
+    // Add Skill Form (POST /addSkills)
+    const addSkillForm = document.getElementById('addSkillForm');
+    if (addSkillForm) {
+        addSkillForm.addEventListener('submit', handleAddSkill);
+    }
+
+    // Update Profile Form (PUT /upadateprofile/{id})
+    const updateProfileForm = document.getElementById('updateProfileForm');
+    if (updateProfileForm) {
+        updateProfileForm.addEventListener('submit', handleUpdateProfile);
+    }
+
     // Contact Quick Form (Direct mailto trigger)
     const contactQuickForm = document.getElementById('contactQuickForm');
     if (contactQuickForm) {
@@ -130,7 +143,10 @@ function setupEventListeners() {
     // Modals Wiring
     setupModal('openAddProfileModalBtn', 'addProfileModal', 'closeAddProfileModal');
     setupModal('openSearchProfileModalBtn', 'searchProfileModal', 'closeSearchProfileModal');
+    setupModal(null, 'updateProfileModal', 'closeUpdateProfileModal');
     setupModal('openAddProjectModalBtn', 'addProjectModal', 'closeAddProjectModal');
+    setupModal('openAddSkillModalBtn', 'addSkillModal', 'closeAddSkillModal');
+    setupModal('openAddSkillSectionBtn', 'addSkillModal', 'closeAddSkillModal');
 }
 
 function setupModal(openBtnId, modalId, closeBtnId) {
@@ -332,6 +348,9 @@ function renderProfilesList(profiles) {
                     <button class="btn btn-secondary btn-sm" onclick="selectPrimaryProfile(${p.id})">
                         <i class="fa-solid fa-arrow-up"></i> Display as Hero
                     </button>
+                    <button class="btn btn-secondary btn-sm" onclick="openEditProfileModal(${p.id})">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                    </button>
                     <button class="btn btn-danger btn-sm" onclick="deleteProfile('${encodeURIComponent(p.fullName || '')}', ${p.id})">
                         <i class="fa-solid fa-trash"></i> Delete
                     </button>
@@ -394,6 +413,88 @@ async function handleAddProfile(e) {
     } catch (err) {
         console.error('POST /addProfile error:', err);
         showToast(err.message || 'Error saving profile', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalContent;
+    }
+}
+
+/**
+ * Open Update Profile Modal and populate inputs with profile data
+ */
+window.openEditProfileModal = function(id) {
+    const profile = allProfiles.find(p => p.id === id);
+    if (!profile) {
+        showToast('Profile not found', 'error');
+        return;
+    }
+
+    document.getElementById('updateProfileId').value = profile.id;
+    document.getElementById('updateFullName').value = profile.fullName || '';
+    document.getElementById('updateHeadline').value = profile.headline || '';
+    document.getElementById('updateBio').value = profile.bio || '';
+    document.getElementById('updateEmail').value = profile.email || '';
+    document.getElementById('updatePhone').value = profile.phoneNumber || '';
+    document.getElementById('updateLocation').value = profile.location || '';
+    document.getElementById('updateResumeUrl').value = profile.resumeUrl || '';
+    document.getElementById('updateGithubUrl').value = profile.githubUrl || '';
+    document.getElementById('updateLinkedinUrl').value = profile.linkedinUrl || '';
+
+    const modal = document.getElementById('updateProfileModal');
+    if (modal) {
+        modal.classList.add('active');
+        const firstInput = modal.querySelector('input:not([type="hidden"]), textarea');
+        if (firstInput) setTimeout(() => firstInput.focus(), 100);
+    }
+};
+
+/**
+ * Handle PUT /upadateprofile/{id}
+ */
+async function handleUpdateProfile(e) {
+    e.preventDefault();
+    const id = document.getElementById('updateProfileId').value;
+    if (!id) {
+        showToast('No profile ID specified for update', 'error');
+        return;
+    }
+
+    const btn = document.getElementById('submitUpdateProfileBtn');
+    const originalContent = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Updating in Backend...';
+
+    const payload = {
+        fullName: document.getElementById('updateFullName').value.trim(),
+        headline: document.getElementById('updateHeadline').value.trim(),
+        bio: document.getElementById('updateBio').value.trim(),
+        email: document.getElementById('updateEmail').value.trim(),
+        phoneNumber: document.getElementById('updatePhone').value.trim(),
+        location: document.getElementById('updateLocation').value.trim(),
+        resumeUrl: document.getElementById('updateResumeUrl').value.trim(),
+        githubUrl: document.getElementById('updateGithubUrl').value.trim(),
+        linkedinUrl: document.getElementById('updateLinkedinUrl').value.trim()
+    };
+
+    try {
+        const response = await fetch(`${API_BASE}/upadateprofile/${encodeURIComponent(id)}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || `Failed to update profile (HTTP ${response.status})`);
+        }
+
+        const updatedProfile = await response.json();
+        showToast(`Profile for ${updatedProfile.fullName || 'user'} updated successfully!`, 'success');
+        document.getElementById('updateProfileModal').classList.remove('active');
+        await loadAllProfiles();
+    } catch (err) {
+        console.error('PUT /upadateprofile error:', err);
+        showToast(err.message || 'Error updating profile', 'error');
     } finally {
         btn.disabled = false;
         btn.innerHTML = originalContent;
@@ -647,6 +748,142 @@ window.deleteProject = async function(id) {
         showToast('Error deleting project from backend', 'error');
     }
 };
+
+// =========================================================
+// SKILLS API INTEGRATION (POST /addSkills)
+// =========================================================
+
+/**
+ * Load and render custom added skills from local persistence
+ */
+function loadSavedSkills() {
+    try {
+        const saved = JSON.parse(localStorage.getItem('savedSkills') || '[]');
+        saved.forEach(skill => appendSkillToUI(skill));
+    } catch (e) {
+        console.warn('Could not load saved skills from storage', e);
+    }
+}
+
+/**
+ * Handle POST /addSkills
+ */
+async function handleAddSkill(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitAddSkillBtn');
+    const originalContent = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving Skill...';
+
+    const payload = {
+        name: document.getElementById('skillName').value.trim(),
+        category: document.getElementById('skillCategory').value.trim(),
+        proficiency: document.getElementById('skillProficiency').value.trim(),
+        iconUrl: document.getElementById('skillIconUrl').value.trim() || null,
+        displayOrder: parseInt(document.getElementById('skillDisplayOrder').value, 10) || 1
+    };
+
+    try {
+        const response = await fetch(`${API_BASE}/addSkills`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(errText || 'Failed to save skill to backend');
+        }
+
+        const created = await response.json();
+        appendSkillToUI(created);
+
+        // Persist in local storage
+        try {
+            const saved = JSON.parse(localStorage.getItem('savedSkills') || '[]');
+            saved.push(created);
+            localStorage.setItem('savedSkills', JSON.stringify(saved));
+        } catch (storageErr) {
+            console.warn('Storage error', storageErr);
+        }
+
+        showToast(`Skill "${created.name || payload.name}" saved to database!`, 'success');
+        document.getElementById('addSkillForm').reset();
+        document.getElementById('addSkillModal').classList.remove('active');
+    } catch (err) {
+        console.error('POST /addSkills error:', err);
+        showToast(err.message || 'Error saving skill', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalContent;
+    }
+}
+
+/**
+ * Append skill chip dynamically to corresponding category card
+ */
+function appendSkillToUI(skill) {
+    if (!skill || !skill.name) return;
+
+    const cat = (skill.category || '').toLowerCase();
+    let targetContainer = null;
+
+    if (cat.includes('lang')) {
+        targetContainer = document.getElementById('skills-languages');
+    } else if (cat.includes('back') || cat.includes('frame')) {
+        targetContainer = document.getElementById('skills-backend');
+    } else if (cat.includes('data') && (cat.includes('base') || cat.includes('persist'))) {
+        targetContainer = document.getElementById('skills-databases');
+    } else if (cat.includes('tool') || cat.includes('dev')) {
+        targetContainer = document.getElementById('skills-tools');
+    } else if (cat.includes('ai') || cat.includes('machine') || cat.includes('data science')) {
+        targetContainer = document.getElementById('skills-ai');
+    } else if (cat.includes('core') || cat.includes('comp')) {
+        targetContainer = document.getElementById('skills-core');
+    }
+
+    // If no matching predefined category, create or append to custom category card
+    if (!targetContainer) {
+        targetContainer = document.getElementById('skills-custom');
+        if (!targetContainer) {
+            const container = document.getElementById('skillsContainer');
+            if (container) {
+                const customCard = document.createElement('div');
+                customCard.className = 'skill-category-card';
+                customCard.innerHTML = `
+                    <div class="skill-cat-header">
+                        <div class="skill-cat-icon"><i class="fa-solid fa-shapes"></i></div>
+                        <h3 class="skill-cat-title">${escapeHtml(skill.category || 'Specialized Skills')}</h3>
+                    </div>
+                    <div class="skill-chips" id="skills-custom"></div>
+                `;
+                container.appendChild(customCard);
+                targetContainer = document.getElementById('skills-custom');
+            }
+        }
+    }
+
+    if (targetContainer) {
+        // Prevent duplicate rendering
+        const existing = Array.from(targetContainer.querySelectorAll('.skill-chip')).find(
+            chip => chip.textContent.toLowerCase().includes(skill.name.toLowerCase())
+        );
+        if (existing) return;
+
+        const iconHtml = skill.iconUrl && skill.iconUrl.startsWith('fa')
+            ? `<i class="${escapeHtml(skill.iconUrl)}" style="color: var(--secondary);"></i> `
+            : `<i class="fa-solid fa-code" style="color: var(--secondary);"></i> `;
+
+        const proficiencyHtml = skill.proficiency
+            ? `<span class="proficiency-tag">${escapeHtml(skill.proficiency)}</span>`
+            : '';
+
+        const chip = document.createElement('span');
+        chip.className = 'skill-chip skill-chip-new';
+        chip.innerHTML = `${iconHtml}${escapeHtml(skill.name)}${proficiencyHtml}`;
+        targetContainer.appendChild(chip);
+    }
+}
 
 // =========================================================
 // CONTACT & UTILITY FUNCTIONS

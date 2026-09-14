@@ -42,6 +42,7 @@ function initApp() {
     setupEventListeners();
     loadAllProfiles();
     loadAllProjects();
+    loadSavedSkills();
 }
 
 /**
@@ -115,6 +116,12 @@ function setupEventListeners() {
         addProjectForm.addEventListener('submit', handleAddProject);
     }
 
+    // Add Skill Form (POST /addSkills)
+    const addSkillForm = document.getElementById('addSkillForm');
+    if (addSkillForm) {
+        addSkillForm.addEventListener('submit', handleAddSkill);
+    }
+
     // Contact Quick Form (Direct mailto trigger)
     const contactQuickForm = document.getElementById('contactQuickForm');
     if (contactQuickForm) {
@@ -131,6 +138,8 @@ function setupEventListeners() {
     setupModal('openAddProfileModalBtn', 'addProfileModal', 'closeAddProfileModal');
     setupModal('openSearchProfileModalBtn', 'searchProfileModal', 'closeSearchProfileModal');
     setupModal('openAddProjectModalBtn', 'addProjectModal', 'closeAddProjectModal');
+    setupModal('openAddSkillModalBtn', 'addSkillModal', 'closeAddSkillModal');
+    setupModal('openAddSkillSectionBtn', 'addSkillModal', 'closeAddSkillModal');
 }
 
 function setupModal(openBtnId, modalId, closeBtnId) {
@@ -647,6 +656,142 @@ window.deleteProject = async function(id) {
         showToast('Error deleting project from backend', 'error');
     }
 };
+
+// =========================================================
+// SKILLS API INTEGRATION (POST /addSkills)
+// =========================================================
+
+/**
+ * Load and render custom added skills from local persistence
+ */
+function loadSavedSkills() {
+    try {
+        const saved = JSON.parse(localStorage.getItem('savedSkills') || '[]');
+        saved.forEach(skill => appendSkillToUI(skill));
+    } catch (e) {
+        console.warn('Could not load saved skills from storage', e);
+    }
+}
+
+/**
+ * Handle POST /addSkills
+ */
+async function handleAddSkill(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitAddSkillBtn');
+    const originalContent = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving Skill...';
+
+    const payload = {
+        name: document.getElementById('skillName').value.trim(),
+        category: document.getElementById('skillCategory').value.trim(),
+        proficiency: document.getElementById('skillProficiency').value.trim(),
+        iconUrl: document.getElementById('skillIconUrl').value.trim() || null,
+        displayOrder: parseInt(document.getElementById('skillDisplayOrder').value, 10) || 1
+    };
+
+    try {
+        const response = await fetch(`${API_BASE}/addSkills`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(errText || 'Failed to save skill to backend');
+        }
+
+        const created = await response.json();
+        appendSkillToUI(created);
+
+        // Persist in local storage
+        try {
+            const saved = JSON.parse(localStorage.getItem('savedSkills') || '[]');
+            saved.push(created);
+            localStorage.setItem('savedSkills', JSON.stringify(saved));
+        } catch (storageErr) {
+            console.warn('Storage error', storageErr);
+        }
+
+        showToast(`Skill "${created.name || payload.name}" saved to database!`, 'success');
+        document.getElementById('addSkillForm').reset();
+        document.getElementById('addSkillModal').classList.remove('active');
+    } catch (err) {
+        console.error('POST /addSkills error:', err);
+        showToast(err.message || 'Error saving skill', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalContent;
+    }
+}
+
+/**
+ * Append skill chip dynamically to corresponding category card
+ */
+function appendSkillToUI(skill) {
+    if (!skill || !skill.name) return;
+
+    const cat = (skill.category || '').toLowerCase();
+    let targetContainer = null;
+
+    if (cat.includes('lang')) {
+        targetContainer = document.getElementById('skills-languages');
+    } else if (cat.includes('back') || cat.includes('frame')) {
+        targetContainer = document.getElementById('skills-backend');
+    } else if (cat.includes('data') && (cat.includes('base') || cat.includes('persist'))) {
+        targetContainer = document.getElementById('skills-databases');
+    } else if (cat.includes('tool') || cat.includes('dev')) {
+        targetContainer = document.getElementById('skills-tools');
+    } else if (cat.includes('ai') || cat.includes('machine') || cat.includes('data science')) {
+        targetContainer = document.getElementById('skills-ai');
+    } else if (cat.includes('core') || cat.includes('comp')) {
+        targetContainer = document.getElementById('skills-core');
+    }
+
+    // If no matching predefined category, create or append to custom category card
+    if (!targetContainer) {
+        targetContainer = document.getElementById('skills-custom');
+        if (!targetContainer) {
+            const container = document.getElementById('skillsContainer');
+            if (container) {
+                const customCard = document.createElement('div');
+                customCard.className = 'skill-category-card';
+                customCard.innerHTML = `
+                    <div class="skill-cat-header">
+                        <div class="skill-cat-icon"><i class="fa-solid fa-shapes"></i></div>
+                        <h3 class="skill-cat-title">${escapeHtml(skill.category || 'Specialized Skills')}</h3>
+                    </div>
+                    <div class="skill-chips" id="skills-custom"></div>
+                `;
+                container.appendChild(customCard);
+                targetContainer = document.getElementById('skills-custom');
+            }
+        }
+    }
+
+    if (targetContainer) {
+        // Prevent duplicate rendering
+        const existing = Array.from(targetContainer.querySelectorAll('.skill-chip')).find(
+            chip => chip.textContent.toLowerCase().includes(skill.name.toLowerCase())
+        );
+        if (existing) return;
+
+        const iconHtml = skill.iconUrl && skill.iconUrl.startsWith('fa')
+            ? `<i class="${escapeHtml(skill.iconUrl)}" style="color: var(--secondary);"></i> `
+            : `<i class="fa-solid fa-code" style="color: var(--secondary);"></i> `;
+
+        const proficiencyHtml = skill.proficiency
+            ? `<span class="proficiency-tag">${escapeHtml(skill.proficiency)}</span>`
+            : '';
+
+        const chip = document.createElement('span');
+        chip.className = 'skill-chip skill-chip-new';
+        chip.innerHTML = `${iconHtml}${escapeHtml(skill.name)}${proficiencyHtml}`;
+        targetContainer.appendChild(chip);
+    }
+}
 
 // =========================================================
 // CONTACT & UTILITY FUNCTIONS

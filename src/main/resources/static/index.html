@@ -44,6 +44,9 @@
                 <button class="btn btn-secondary btn-sm" id="openSearchProfileModalBtn" title="Search profile by Name &amp; ID">
                     <i class="fa-solid fa-magnifying-glass"></i> <span class="d-none-sm">Search</span>
                 </button>
+                <button class="btn btn-secondary btn-sm" id="openAddSkillModalBtn" title="Add a skill (POST /addSkills)">
+                    <i class="fa-solid fa-code"></i> <span class="d-none-sm">Add Skill</span>
+                </button>
                 <button class="btn btn-secondary btn-sm" id="openAddProjectModalBtn" title="Create a new project">
                     <i class="fa-solid fa-folder-plus"></i> <span class="d-none-sm">Add Project</span>
                 </button>
@@ -235,19 +238,21 @@
                     <span class="section-tag">// 02. CAPABILITIES</span>
                     <h2 class="section-title">Technical Arsenal</h2>
                 </div>
-                <p class="section-desc">
-                    A tailored stack reflecting hands-on expertise in backend engineering, core programming, and modern tools.
-                </p>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <button class="btn btn-primary btn-sm" id="openAddSkillSectionBtn">
+                        <i class="fa-solid fa-plus"></i> Add Skill
+                    </button>
+                </div>
             </div>
 
-            <div class="skills-container">
+            <div class="skills-container" id="skillsContainer">
                 <!-- Category 1: Languages -->
-                <div class="skill-category-card">
+                <div class="skill-category-card" data-category="Languages">
                     <div class="skill-cat-header">
                         <div class="skill-cat-icon"><i class="fa-solid fa-code"></i></div>
                         <h3 class="skill-cat-title">Languages</h3>
                     </div>
-                    <div class="skill-chips">
+                    <div class="skill-chips" id="skills-languages">
                         <span class="skill-chip"><i class="fa-brands fa-java" style="color: #f89820;"></i> Java</span>
                         <span class="skill-chip"><i class="fa-solid fa-c" style="color: #659ad2;"></i> C</span>
                         <span class="skill-chip"><i class="fa-brands fa-python" style="color: #3776ab;"></i> Python</span>
@@ -256,12 +261,12 @@
                 </div>
 
                 <!-- Category 2: Backend Frameworks -->
-                <div class="skill-category-card">
+                <div class="skill-category-card" data-category="Backend & Frameworks">
                     <div class="skill-cat-header">
                         <div class="skill-cat-icon"><i class="fa-solid fa-gears"></i></div>
                         <h3 class="skill-cat-title">Backend &amp; Frameworks</h3>
                     </div>
-                    <div class="skill-chips">
+                    <div class="skill-chips" id="skills-backend">
                         <span class="skill-chip"><i class="fa-solid fa-leaf" style="color: #6db33f;"></i> Spring Boot</span>
                         <span class="skill-chip"><i class="fa-solid fa-network-wired"></i> RESTful APIs</span>
                         <span class="skill-chip"><i class="fa-solid fa-layer-group"></i> Spring Data JPA</span>
@@ -270,12 +275,12 @@
                 </div>
 
                 <!-- Category 3: Databases & Storage -->
-                <div class="skill-category-card">
+                <div class="skill-category-card" data-category="Databases & Persistence">
                     <div class="skill-cat-header">
                         <div class="skill-cat-icon"><i class="fa-solid fa-database"></i></div>
                         <h3 class="skill-cat-title">Databases &amp; Persistence</h3>
                     </div>
-                    <div class="skill-chips">
+                    <div class="skill-chips" id="skills-databases">
                         <span class="skill-chip"><i class="fa-solid fa-database" style="color: #00758f;"></i> MySQL</span>
                         <span class="skill-chip"><i class="fa-solid fa-table"></i> Relational Schema</span>
                         <span class="skill-chip"><i class="fa-solid fa-bolt"></i> Indexing &amp; Queries</span>
@@ -284,12 +289,12 @@
                 </div>
 
                 <!-- Category 4: Tools & Platforms -->
-                <div class="skill-category-card">
+                <div class="skill-category-card" data-category="Developer Tools">
                     <div class="skill-cat-header">
                         <div class="skill-cat-icon"><i class="fa-solid fa-toolbox"></i></div>
                         <h3 class="skill-cat-title">Developer Tools</h3>
                     </div>
-                    <div class="skill-chips">
+                    <div class="skill-chips" id="skills-tools">
                         <span class="skill-chip"><i class="fa-brands fa-git-alt" style="color: #f05032;"></i> Git</span>
                         <span class="skill-chip"><i class="fa-brands fa-github"></i> GitHub</span>
                         <span class="skill-chip"><i class="fa-solid fa-paper-plane" style="color: #ff6c37;"></i> Postman</span>
@@ -299,12 +304,12 @@
                 </div>
 
                 <!-- Category 5: AI & Data -->
-                <div class="skill-category-card">
+                <div class="skill-category-card" data-category="AI & Data Science">
                     <div class="skill-cat-header">
                         <div class="skill-cat-icon"><i class="fa-solid fa-brain"></i></div>
                         <h3 class="skill-cat-title">AI &amp; Data Science</h3>
                     </div>
-                    <div class="skill-chips">
+                    <div class="skill-chips" id="skills-ai">
                         <span class="skill-chip"><i class="fa-solid fa-robot"></i> Machine Learning</span>
                         <span class="skill-chip"><i class="fa-solid fa-chart-line"></i> Data Analysis</span>
                         <span class="skill-chip"><i class="fa-solid fa-calculator"></i> NumPy &amp; Pandas</span>
@@ -313,12 +318,12 @@
                 </div>
 
                 <!-- Category 6: Engineering Practices -->
-                <div class="skill-category-card">
+                <div class="skill-category-card" data-category="Core Competencies">
                     <div class="skill-cat-header">
                         <div class="skill-cat-icon"><i class="fa-solid fa-vial-circle-check"></i></div>
                         <h3 class="skill-cat-title">Core Competencies</h3>
                     </div>
-                    <div class="skill-chips">
+                    <div class="skill-chips" id="skills-core">
                         <span class="skill-chip"><i class="fa-solid fa-shapes"></i> Data Structures</span>
                         <span class="skill-chip"><i class="fa-solid fa-code"></i> Algorithms</span>
                         <span class="skill-chip"><i class="fa-solid fa-sitemap"></i> Object-Oriented Design</span>
@@ -648,6 +653,74 @@
         </div>
     </div>
 
+    <!-- Update Profile Modal (PUT /upadateprofile/{id}) -->
+    <div class="modal-overlay" id="updateProfileModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-pen-to-square" style="color: var(--secondary);"></i> Update Profile (PUT /upadateprofile/{id})</h3>
+                <button class="modal-close" id="closeUpdateProfileModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="updateProfileForm">
+                    <input type="hidden" id="updateProfileId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="updateFullName">Full Name *</label>
+                            <input type="text" class="form-control" id="updateFullName" required placeholder="Vishu Gupta">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="updateHeadline">Headline *</label>
+                            <input type="text" class="form-control" id="updateHeadline" required placeholder="Software Engineer | Backend &amp; AI/ML">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="updateBio">Bio</label>
+                        <textarea class="form-control" id="updateBio" rows="3" placeholder="Brief technical summary..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="updateEmail">Email</label>
+                            <input type="email" class="form-control" id="updateEmail" placeholder="vishugupta@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="updatePhone">Phone Number</label>
+                            <input type="text" class="form-control" id="updatePhone" placeholder="+91 9876543210">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="updateLocation">Location</label>
+                            <input type="text" class="form-control" id="updateLocation" placeholder="India">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="updateResumeUrl">Resume URL</label>
+                            <input type="url" class="form-control" id="updateResumeUrl" placeholder="https://drive.google.com/...">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="updateGithubUrl">GitHub URL</label>
+                            <input type="url" class="form-control" id="updateGithubUrl" placeholder="https://github.com/...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="updateLinkedinUrl">LinkedIn URL</label>
+                            <input type="url" class="form-control" id="updateLinkedinUrl" placeholder="https://linkedin.com/in/...">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="submitUpdateProfileBtn" style="width: 100%; justify-content: center; margin-top: 14px;">
+                        <i class="fa-solid fa-pen-to-square"></i> Update Profile in Backend
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Search Profile Modal (GET /findByfullNameAndId) -->
     <div class="modal-overlay" id="searchProfileModal">
         <div class="modal-box">
@@ -676,6 +749,67 @@
                 </form>
 
                 <div id="searchResultBox" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Skill Modal (POST /addSkills) -->
+    <div class="modal-overlay" id="addSkillModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-code" style="color: var(--primary);"></i> Add Skill (POST /addSkills)</h3>
+                <button class="modal-close" id="closeAddSkillModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addSkillForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="skillName">Skill Name *</label>
+                            <input type="text" class="form-control" id="skillName" required placeholder="e.g. Docker, Redis, Kubernetes">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="skillCategory">Category *</label>
+                            <select class="form-control" id="skillCategory" required>
+                                <option value="Languages">Languages</option>
+                                <option value="Backend & Frameworks" selected>Backend &amp; Frameworks</option>
+                                <option value="Databases & Persistence">Databases &amp; Persistence</option>
+                                <option value="Developer Tools">Developer Tools</option>
+                                <option value="AI & Data Science">AI &amp; Data Science</option>
+                                <option value="Core Competencies">Core Competencies</option>
+                                <option value="Other">Other / Custom</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="skillProficiency">Proficiency Level</label>
+                            <select class="form-control" id="skillProficiency">
+                                <option value="Advanced" selected>Advanced</option>
+                                <option value="Expert">Expert</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Proficient">Proficient</option>
+                                <option value="Beginner">Beginner</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="skillDisplayOrder">Display Order</label>
+                            <input type="number" class="form-control" id="skillDisplayOrder" placeholder="e.g. 1" value="1">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="skillIconUrl">Icon (Font Awesome class or image URL)</label>
+                        <input type="text" class="form-control" id="skillIconUrl" placeholder="fa-brands fa-docker, fa-solid fa-server, etc.">
+                        <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 6px;">
+                            Quick examples: <code>fa-brands fa-docker</code>, <code>fa-solid fa-server</code>, <code>fa-brands fa-aws</code>, <code>fa-solid fa-bolt</code>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="submitAddSkillBtn" style="width: 100%; justify-content: center; margin-top: 14px;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Save Skill to Backend
+                    </button>
+                </form>
             </div>
         </div>
     </div>
