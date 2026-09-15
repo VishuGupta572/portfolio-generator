@@ -122,6 +122,12 @@ function setupEventListeners() {
         addSkillForm.addEventListener('submit', handleAddSkill);
     }
 
+    // Update Profile Form (PUT /upadateprofile/{id})
+    const updateProfileForm = document.getElementById('updateProfileForm');
+    if (updateProfileForm) {
+        updateProfileForm.addEventListener('submit', handleUpdateProfile);
+    }
+
     // Contact Quick Form (Direct mailto trigger)
     const contactQuickForm = document.getElementById('contactQuickForm');
     if (contactQuickForm) {
@@ -137,6 +143,7 @@ function setupEventListeners() {
     // Modals Wiring
     setupModal('openAddProfileModalBtn', 'addProfileModal', 'closeAddProfileModal');
     setupModal('openSearchProfileModalBtn', 'searchProfileModal', 'closeSearchProfileModal');
+    setupModal(null, 'updateProfileModal', 'closeUpdateProfileModal');
     setupModal('openAddProjectModalBtn', 'addProjectModal', 'closeAddProjectModal');
     setupModal('openAddSkillModalBtn', 'addSkillModal', 'closeAddSkillModal');
     setupModal('openAddSkillSectionBtn', 'addSkillModal', 'closeAddSkillModal');
@@ -341,6 +348,9 @@ function renderProfilesList(profiles) {
                     <button class="btn btn-secondary btn-sm" onclick="selectPrimaryProfile(${p.id})">
                         <i class="fa-solid fa-arrow-up"></i> Display as Hero
                     </button>
+                    <button class="btn btn-secondary btn-sm" onclick="openEditProfileModal(${p.id})">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                    </button>
                     <button class="btn btn-danger btn-sm" onclick="deleteProfile('${encodeURIComponent(p.fullName || '')}', ${p.id})">
                         <i class="fa-solid fa-trash"></i> Delete
                     </button>
@@ -403,6 +413,88 @@ async function handleAddProfile(e) {
     } catch (err) {
         console.error('POST /addProfile error:', err);
         showToast(err.message || 'Error saving profile', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalContent;
+    }
+}
+
+/**
+ * Open Update Profile Modal and populate inputs with profile data
+ */
+window.openEditProfileModal = function(id) {
+    const profile = allProfiles.find(p => p.id === id);
+    if (!profile) {
+        showToast('Profile not found', 'error');
+        return;
+    }
+
+    document.getElementById('updateProfileId').value = profile.id;
+    document.getElementById('updateFullName').value = profile.fullName || '';
+    document.getElementById('updateHeadline').value = profile.headline || '';
+    document.getElementById('updateBio').value = profile.bio || '';
+    document.getElementById('updateEmail').value = profile.email || '';
+    document.getElementById('updatePhone').value = profile.phoneNumber || '';
+    document.getElementById('updateLocation').value = profile.location || '';
+    document.getElementById('updateResumeUrl').value = profile.resumeUrl || '';
+    document.getElementById('updateGithubUrl').value = profile.githubUrl || '';
+    document.getElementById('updateLinkedinUrl').value = profile.linkedinUrl || '';
+
+    const modal = document.getElementById('updateProfileModal');
+    if (modal) {
+        modal.classList.add('active');
+        const firstInput = modal.querySelector('input:not([type="hidden"]), textarea');
+        if (firstInput) setTimeout(() => firstInput.focus(), 100);
+    }
+};
+
+/**
+ * Handle PUT /upadateprofile/{id}
+ */
+async function handleUpdateProfile(e) {
+    e.preventDefault();
+    const id = document.getElementById('updateProfileId').value;
+    if (!id) {
+        showToast('No profile ID specified for update', 'error');
+        return;
+    }
+
+    const btn = document.getElementById('submitUpdateProfileBtn');
+    const originalContent = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Updating in Backend...';
+
+    const payload = {
+        fullName: document.getElementById('updateFullName').value.trim(),
+        headline: document.getElementById('updateHeadline').value.trim(),
+        bio: document.getElementById('updateBio').value.trim(),
+        email: document.getElementById('updateEmail').value.trim(),
+        phoneNumber: document.getElementById('updatePhone').value.trim(),
+        location: document.getElementById('updateLocation').value.trim(),
+        resumeUrl: document.getElementById('updateResumeUrl').value.trim(),
+        githubUrl: document.getElementById('updateGithubUrl').value.trim(),
+        linkedinUrl: document.getElementById('updateLinkedinUrl').value.trim()
+    };
+
+    try {
+        const response = await fetch(`${API_BASE}/upadateprofile/${encodeURIComponent(id)}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || `Failed to update profile (HTTP ${response.status})`);
+        }
+
+        const updatedProfile = await response.json();
+        showToast(`Profile for ${updatedProfile.fullName || 'user'} updated successfully!`, 'success');
+        document.getElementById('updateProfileModal').classList.remove('active');
+        await loadAllProfiles();
+    } catch (err) {
+        console.error('PUT /upadateprofile error:', err);
+        showToast(err.message || 'Error updating profile', 'error');
     } finally {
         btn.disabled = false;
         btn.innerHTML = originalContent;

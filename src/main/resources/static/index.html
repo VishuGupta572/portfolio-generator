@@ -342,7 +342,10 @@
                     <span class="section-tag">// 03. PORTFOLIO WORK</span>
                     <h2 class="section-title">Featured Projects</h2>
                 </div>
-                <div style="display: flex; gap: 12px; align-items: center;">
+                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                    <button class="btn btn-secondary btn-sm" id="openSearchProjectModalBtn" onclick="document.getElementById('searchProjectModal').classList.add('active')">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search Project
+                    </button>
                     <button class="btn btn-primary btn-sm" onclick="document.getElementById('addProjectModal').classList.add('active')">
                         <i class="fa-solid fa-plus"></i> New Project
                     </button>
@@ -578,6 +581,106 @@
                         <i class="fa-solid fa-cloud-arrow-up"></i> Save Project to Backend
                     </button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Project Modal (PUT /UpadateProjects/{title}) -->
+    <div class="modal-overlay" id="updateProjectModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-pen-to-square" style="color: var(--primary);"></i> Update Project (PUT /UpadateProjects/{title})</h3>
+                <button class="modal-close" id="closeUpdateProjectModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="updateProjectForm">
+                    <!-- Hidden input to store original title for the endpoint path variable -->
+                    <input type="hidden" id="updateOriginalTitle">
+
+                    <div class="form-group">
+                        <label class="form-label" for="updateProjectTitle">Project Title *</label>
+                        <input type="text" class="form-control" id="updateProjectTitle" required placeholder="e.g. Distributed E-Commerce Microservices">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="updateProjectShortDesc">Short Summary / Tagline *</label>
+                        <input type="text" class="form-control" id="updateProjectShortDesc" required placeholder="High-throughput transaction processor">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="updateProjectDesc">Full Description &amp; Technical Architecture</label>
+                        <textarea class="form-control" id="updateProjectDesc" rows="3" placeholder="Engineered RESTful endpoints, implemented JPA caching..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="updateProjectTech">Technologies (comma separated)</label>
+                        <input type="text" class="form-control" id="updateProjectTech" placeholder="Java, Spring Boot, MySQL, REST API, Docker">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="updateProjectLiveUrl">Live Demo URL</label>
+                            <input type="url" class="form-control" id="updateProjectLiveUrl" placeholder="https://example.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="updateProjectGithubUrl">GitHub Repository URL</label>
+                            <input type="url" class="form-control" id="updateProjectGithubUrl" placeholder="https://github.com/...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="updateProjectThumbUrl">Thumbnail Image URL</label>
+                        <input type="url" class="form-control" id="updateProjectThumbUrl" placeholder="https://images.unsplash.com/... (optional)">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="updateProjectStartDate">Start Date</label>
+                            <input type="date" class="form-control" id="updateProjectStartDate">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="updateProjectEndDate">End Date</label>
+                            <input type="date" class="form-control" id="updateProjectEndDate">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 6px;">
+                        <input type="checkbox" id="updateProjectFeatured" style="width: 18px; height: 18px; accent-color: var(--primary);">
+                        <label for="updateProjectFeatured" style="font-size: 0.92rem; color: var(--text-high); cursor: pointer;">
+                            Mark as Featured Project (pinned badge)
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="submitUpdateProjectBtn" style="width: 100%; justify-content: center; margin-top: 14px;">
+                        <i class="fa-solid fa-pen-to-square"></i> Update Project in Backend
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Project Modal (GET /getprojectBytitle) -->
+    <div class="modal-overlay" id="searchProjectModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-magnifying-glass" style="color: var(--primary);"></i> Search Project</h3>
+                <button class="modal-close" id="closeSearchProjectModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="searchProjectForm">
+                    <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 18px;">
+                        Executes: <code>GET /getprojectBytitle?title=...</code>
+                    </p>
+                    <div class="form-group">
+                        <label class="form-label" for="searchProjectTitle">Exact Project Title</label>
+                        <input type="text" class="form-control" id="searchProjectTitle" required placeholder="e.g. Distributed E-Commerce Microservices">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search in Database
+                    </button>
+                </form>
+
+                <div id="searchProjectResultBox" style="margin-top: 20px;"></div>
             </div>
         </div>
     </div>

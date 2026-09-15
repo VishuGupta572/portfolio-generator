@@ -116,6 +116,18 @@ function setupEventListeners() {
         addProjectForm.addEventListener('submit', handleAddProject);
     }
 
+    // Update Project Form (PUT /UpadateProjects/{title})
+    const updateProjectForm = document.getElementById('updateProjectForm');
+    if (updateProjectForm) {
+        updateProjectForm.addEventListener('submit', handleUpdateProject);
+    }
+
+    // Search Project Form (GET /getprojectBytitle)
+    const searchProjectForm = document.getElementById('searchProjectForm');
+    if (searchProjectForm) {
+        searchProjectForm.addEventListener('submit', handleSearchProject);
+    }
+
     // Add Skill Form (POST /addSkills)
     const addSkillForm = document.getElementById('addSkillForm');
     if (addSkillForm) {
@@ -145,6 +157,8 @@ function setupEventListeners() {
     setupModal('openSearchProfileModalBtn', 'searchProfileModal', 'closeSearchProfileModal');
     setupModal(null, 'updateProfileModal', 'closeUpdateProfileModal');
     setupModal('openAddProjectModalBtn', 'addProjectModal', 'closeAddProjectModal');
+    setupModal('openSearchProjectModalBtn', 'searchProjectModal', 'closeSearchProjectModal');
+    setupModal(null, 'updateProjectModal', 'closeUpdateProjectModal');
     setupModal('openAddSkillModalBtn', 'addSkillModal', 'closeAddSkillModal');
     setupModal('openAddSkillSectionBtn', 'addSkillModal', 'closeAddSkillModal');
 }
@@ -668,6 +682,9 @@ function renderProjectsList(projects) {
                         <div class="project-links-group">
                             ${p.liveUrl ? `<a href="${escapeHtml(p.liveUrl)}" target="_blank" class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>` : ''}
                             ${p.githubUrl ? `<a href="${escapeHtml(p.githubUrl)}" target="_blank" class="btn btn-secondary btn-sm"><i class="fa-brands fa-github"></i> Code</a>` : ''}
+                            <button class="btn btn-secondary btn-sm" onclick="openEditProjectModal('${encodeURIComponent(p.title || '')}')" title="Edit Project">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </button>
                         </div>
                         <button class="btn btn-danger btn-sm" onclick="deleteProject(${p.id})" title="Delete Project">
                             <i class="fa-solid fa-trash"></i>
@@ -748,6 +765,148 @@ window.deleteProject = async function(id) {
         showToast('Error deleting project from backend', 'error');
     }
 };
+
+/**
+ * Open Update Project Modal and populate inputs with project data
+ */
+window.openEditProjectModal = function(encodedTitle) {
+    const title = decodeURIComponent(encodedTitle);
+    const project = allProjects.find(p => (p.title || '').trim() === title.trim());
+    if (!project) {
+        showToast(`Project "${title}" not found in loaded list`, 'error');
+        return;
+    }
+
+    document.getElementById('updateOriginalTitle').value = project.title || '';
+    document.getElementById('updateProjectTitle').value = project.title || '';
+    document.getElementById('updateProjectShortDesc').value = project.shortDescription || '';
+    document.getElementById('updateProjectDesc').value = project.description || '';
+    document.getElementById('updateProjectTech').value = project.technologies || '';
+    document.getElementById('updateProjectThumbUrl').value = project.thumbnailUrl || '';
+    document.getElementById('updateProjectLiveUrl').value = project.liveUrl || '';
+    document.getElementById('updateProjectGithubUrl').value = project.githubUrl || '';
+    document.getElementById('updateProjectStartDate').value = project.startDate || '';
+    document.getElementById('updateProjectEndDate').value = project.endDate || '';
+    document.getElementById('updateProjectFeatured').checked = !!project.featured;
+
+    const modal = document.getElementById('updateProjectModal');
+    if (modal) {
+        modal.classList.add('active');
+        const firstInput = modal.querySelector('input:not([type="hidden"]), textarea');
+        if (firstInput) setTimeout(() => firstInput.focus(), 100);
+    }
+};
+
+/**
+ * Handle PUT /UpadateProjects/{title}
+ */
+async function handleUpdateProject(e) {
+    e.preventDefault();
+    const originalTitle = document.getElementById('updateOriginalTitle').value.trim();
+    if (!originalTitle) {
+        showToast('Original project title missing', 'error');
+        return;
+    }
+
+    const btn = document.getElementById('submitUpdateProjectBtn');
+    const originalContent = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Updating in Backend...';
+
+    const payload = {
+        title: document.getElementById('updateProjectTitle').value.trim(),
+        shortDescription: document.getElementById('updateProjectShortDesc').value.trim(),
+        description: document.getElementById('updateProjectDesc').value.trim(),
+        technologies: document.getElementById('updateProjectTech').value.trim(),
+        thumbnailUrl: document.getElementById('updateProjectThumbUrl').value.trim() || null,
+        liveUrl: document.getElementById('updateProjectLiveUrl').value.trim() || null,
+        githubUrl: document.getElementById('updateProjectGithubUrl').value.trim() || null,
+        startDate: document.getElementById('updateProjectStartDate').value || null,
+        endDate: document.getElementById('updateProjectEndDate').value || null,
+        featured: document.getElementById('updateProjectFeatured').checked
+    };
+
+    try {
+        const response = await fetch(`${API_BASE}/UpadateProjects/${encodeURIComponent(originalTitle)}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(errText || `Failed to update project (HTTP ${response.status})`);
+        }
+
+        const updated = await response.json();
+        showToast(`Project "${updated.title || payload.title}" updated successfully!`, 'success');
+        document.getElementById('updateProjectForm').reset();
+        document.getElementById('updateProjectModal').classList.remove('active');
+        await loadAllProjects();
+    } catch (err) {
+        console.error('PUT /UpadateProjects error:', err);
+        showToast(err.message || 'Error updating project', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalContent;
+    }
+}
+
+/**
+ * Handle GET /getprojectBytitle?title=...
+ */
+async function handleSearchProject(e) {
+    e.preventDefault();
+    const title = document.getElementById('searchProjectTitle').value.trim();
+    const resultBox = document.getElementById('searchProjectResultBox');
+
+    if (!title) {
+        showToast('Please enter a project title', 'error');
+        return;
+    }
+
+    resultBox.innerHTML = '<p style="color: var(--text-dim);"><i class="fa-solid fa-circle-notch fa-spin"></i> Searching project in backend...</p>';
+
+    try {
+        const response = await fetch(`${API_BASE}/getprojectBytitle?title=${encodeURIComponent(title)}`);
+        if (!response.ok) throw new Error('Project not found with that title');
+        const proj = await response.json();
+
+        if (proj && proj.title) {
+            const tags = (proj.technologies || '').split(',').map(t => t.trim()).filter(Boolean);
+            resultBox.innerHTML = `
+                <div class="project-card" style="margin-top: 14px; border-color: var(--primary);">
+                    <div class="project-card-body">
+                        <div class="project-title-row">
+                            <h3 class="project-title">${escapeHtml(proj.title)}</h3>
+                            ${proj.featured ? '<span class="featured-chip"><i class="fa-solid fa-star"></i> Featured</span>' : ''}
+                        </div>
+                        ${proj.shortDescription ? `<div class="project-summary">${escapeHtml(proj.shortDescription)}</div>` : ''}
+                        ${proj.description ? `<p class="project-details">${escapeHtml(proj.description)}</p>` : ''}
+                        ${tags.length > 0 ? `
+                            <div class="tech-tag-row" style="margin: 10px 0;">
+                                ${tags.map(t => `<span class="tech-tag">${escapeHtml(t)}</span>`).join('')}
+                            </div>
+                        ` : ''}
+                        <div style="display: flex; gap: 10px; margin-top: 14px;">
+                            <button class="btn btn-secondary btn-sm" onclick="openEditProjectModal('${encodeURIComponent(proj.title)}'); document.getElementById('searchProjectModal').classList.remove('active');">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit this Project
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProject(${proj.id}); document.getElementById('searchProjectModal').classList.remove('active');">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            resultBox.innerHTML = '<p style="color: var(--danger); margin-top: 14px;">No project found with that exact title.</p>';
+        }
+    } catch (err) {
+        console.error('Search project error:', err);
+        resultBox.innerHTML = `<p style="color: var(--danger); margin-top: 14px;">${escapeHtml(err.message || 'Project not found.')}</p>`;
+    }
+}
 
 // =========================================================
 // SKILLS API INTEGRATION (POST /addSkills)

@@ -653,6 +653,74 @@
         </div>
     </div>
 
+    <!-- Update Profile Modal (PUT /upadateprofile/{id}) -->
+    <div class="modal-overlay" id="updateProfileModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-pen-to-square" style="color: var(--secondary);"></i> Update Profile (PUT /upadateprofile/{id})</h3>
+                <button class="modal-close" id="closeUpdateProfileModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="updateProfileForm">
+                    <input type="hidden" id="updateProfileId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="updateFullName">Full Name *</label>
+                            <input type="text" class="form-control" id="updateFullName" required placeholder="Vishu Gupta">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="updateHeadline">Headline *</label>
+                            <input type="text" class="form-control" id="updateHeadline" required placeholder="Software Engineer | Backend &amp; AI/ML">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="updateBio">Bio</label>
+                        <textarea class="form-control" id="updateBio" rows="3" placeholder="Brief technical summary..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="updateEmail">Email</label>
+                            <input type="email" class="form-control" id="updateEmail" placeholder="vishugupta@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="updatePhone">Phone Number</label>
+                            <input type="text" class="form-control" id="updatePhone" placeholder="+91 9876543210">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="updateLocation">Location</label>
+                            <input type="text" class="form-control" id="updateLocation" placeholder="India">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="updateResumeUrl">Resume URL</label>
+                            <input type="url" class="form-control" id="updateResumeUrl" placeholder="https://drive.google.com/...">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="updateGithubUrl">GitHub URL</label>
+                            <input type="url" class="form-control" id="updateGithubUrl" placeholder="https://github.com/...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="updateLinkedinUrl">LinkedIn URL</label>
+                            <input type="url" class="form-control" id="updateLinkedinUrl" placeholder="https://linkedin.com/in/...">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="submitUpdateProfileBtn" style="width: 100%; justify-content: center; margin-top: 14px;">
+                        <i class="fa-solid fa-pen-to-square"></i> Update Profile in Backend
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Search Profile Modal (GET /findByfullNameAndId) -->
     <div class="modal-overlay" id="searchProfileModal">
         <div class="modal-box">
