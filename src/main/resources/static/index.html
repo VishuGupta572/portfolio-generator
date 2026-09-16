@@ -50,8 +50,8 @@
                 <button class="btn btn-secondary btn-sm" id="openAddProjectModalBtn" title="Create a new project">
                     <i class="fa-solid fa-folder-plus"></i> <span class="d-none-sm">Add Project</span>
                 </button>
-                <button class="btn btn-primary btn-sm" id="openAddProfileModalBtn" title="Create a new profile record">
-                    <i class="fa-solid fa-user-plus"></i> <span class="d-none-sm">Add Profile</span>
+                <button class="btn btn-primary btn-sm" id="openAiChatBtn" title="Talk to Vishu's AI Tour Guide" style="background: linear-gradient(135deg, #6366f1, #06b6d4); border: none;">
+                    <i class="fa-solid fa-sparkles"></i> <span class="d-none-sm">AI Tour Guide</span>
                 </button>
                 <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
                     <i class="fa-solid fa-bars"></i>
@@ -101,6 +101,9 @@
                     <a href="#projects" class="btn btn-primary">
                         <i class="fa-solid fa-layer-group"></i> View Projects
                     </a>
+                    <button type="button" class="btn btn-secondary" id="heroAiTourBtn" style="border-color: var(--secondary); color: var(--secondary);">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> AI Tour Guide
+                    </button>
                     <a href="#contact" class="btn btn-secondary">
                         <i class="fa-solid fa-paper-plane"></i> Contact Me
                     </a>
@@ -914,6 +917,60 @@
                     </button>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- AI TOUR GUIDE CHATBOT WIDGET (Connected to /ClientTalk & /clear) -->
+    <!-- ========================================================= -->
+    <div class="ai-chat-floating-btn" id="aiChatFloatingBtn" title="Chat with Vishu's AI Tour Guide">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span class="ai-chat-badge">AI</span>
+    </div>
+
+    <div class="ai-chat-drawer" id="aiChatDrawer">
+        <div class="ai-chat-header">
+            <div class="ai-chat-header-info">
+                <div class="ai-avatar">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div>
+                    <h4 class="ai-title">Vishu's AI Tour Guide</h4>
+                    <span class="ai-status"><span class="ai-pulse"></span> Powered by Gemini &amp; Spring AI</span>
+                </div>
+            </div>
+            <div class="ai-chat-header-actions">
+                <button class="ai-header-btn" id="aiClearHistoryBtn" title="Clear conversation history (/clear)">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+                <button class="ai-header-btn" id="aiCloseChatBtn" title="Close chat">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="ai-chat-body" id="aiChatMessages">
+            <div class="ai-msg ai-msg-bot">
+                <div class="ai-msg-bubble">
+                    👋 <strong>Hello!</strong> I am Vishu's AI Tour Guide. I can walk you through Vishu's technical background, projects, architecture decisions, or resume.
+                    <br><br>
+                    What would you like to explore today?
+                </div>
+                <div class="ai-quick-prompts">
+                    <button class="ai-quick-btn" onclick="sendAiQuickMessage('Give me a quick tour of Vishu\\'s portfolio')">🚀 Quick Tour</button>
+                    <button class="ai-quick-btn" onclick="sendAiQuickMessage('What are Vishu\\'s core backend skills?')">☕ Core Skills</button>
+                    <button class="ai-quick-btn" onclick="sendAiQuickMessage('Tell me about the featured projects')">💼 Top Projects</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-chat-footer">
+            <form id="aiChatForm" class="ai-chat-form">
+                <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Ask AI about Vishu, projects, skills..." autocomplete="off">
+                <button type="submit" class="ai-chat-send-btn" id="aiChatSendBtn" title="Send Message">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
         </div>
     </div>
 

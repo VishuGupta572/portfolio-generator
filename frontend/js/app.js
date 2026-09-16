@@ -161,6 +161,9 @@ function setupEventListeners() {
     setupModal(null, 'updateProjectModal', 'closeUpdateProjectModal');
     setupModal('openAddSkillModalBtn', 'addSkillModal', 'closeAddSkillModal');
     setupModal('openAddSkillSectionBtn', 'addSkillModal', 'closeAddSkillModal');
+
+    // AI Tour Guide Chatbot Event Wiring
+    setupAiChatbot();
 }
 
 function setupModal(openBtnId, modalId, closeBtnId) {
@@ -1125,4 +1128,162 @@ function escapeHtml(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+}
+
+// =========================================================
+// AI TOUR GUIDE CHATBOT INTEGRATION (POST /ClientTalk & /clear)
+// =========================================================
+
+function setupAiChatbot() {
+    const floatingBtn = document.getElementById('aiChatFloatingBtn');
+    const drawer = document.getElementById('aiChatDrawer');
+    const closeBtn = document.getElementById('aiCloseChatBtn');
+    const navbarAiBtn = document.getElementById('openAiChatBtn');
+    const heroAiBtn = document.getElementById('heroAiTourBtn');
+    const clearBtn = document.getElementById('aiClearHistoryBtn');
+    const form = document.getElementById('aiChatForm');
+
+    const toggleDrawer = () => {
+        if (!drawer) return;
+        drawer.classList.toggle('active');
+        if (drawer.classList.contains('active')) {
+            const input = document.getElementById('aiChatInput');
+            if (input) setTimeout(() => input.focus(), 150);
+        }
+    };
+
+    if (floatingBtn) floatingBtn.addEventListener('click', toggleDrawer);
+    if (navbarAiBtn) navbarAiBtn.addEventListener('click', () => {
+        if (drawer && !drawer.classList.contains('active')) toggleDrawer();
+    });
+    if (heroAiBtn) heroAiBtn.addEventListener('click', () => {
+        if (drawer && !drawer.classList.contains('active')) toggleDrawer();
+    });
+    if (closeBtn) closeBtn.addEventListener('click', () => {
+        if (drawer) drawer.classList.remove('active');
+    });
+
+    if (clearBtn) clearBtn.addEventListener('click', handleClearAiHistory);
+    if (form) form.addEventListener('submit', handleAiChatSubmit);
+}
+
+window.sendAiQuickMessage = function(promptText) {
+    const input = document.getElementById('aiChatInput');
+    if (input) {
+        input.value = promptText;
+        const form = document.getElementById('aiChatForm');
+        if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+    }
+};
+
+async function handleAiChatSubmit(e) {
+    e.preventDefault();
+    const input = document.getElementById('aiChatInput');
+    const sendBtn = document.getElementById('aiChatSendBtn');
+    const messagesBox = document.getElementById('aiChatMessages');
+    if (!input || !messagesBox) return;
+
+    const userText = input.value.trim();
+    if (!userText) return;
+
+    // Append user message bubble
+    appendChatMessage('user', userText);
+    input.value = '';
+
+    // Append loading typing indicator
+    const typingElem = document.createElement('div');
+    typingElem.className = 'ai-msg ai-msg-bot';
+    typingElem.id = 'aiTypingIndicator';
+    typingElem.innerHTML = `
+        <div class="ai-msg-bubble">
+            <div class="ai-typing-indicator">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    `;
+    messagesBox.appendChild(typingElem);
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+
+    if (sendBtn) sendBtn.disabled = true;
+
+    try {
+        const response = await fetch(`${API_BASE}/ClientTalk`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: userText })
+        });
+
+        if (!response.ok) {
+            const err = await response.text();
+            throw new Error(err || `HTTP error ${response.status}`);
+        }
+
+        const reply = await response.text();
+        const indicator = document.getElementById('aiTypingIndicator');
+        if (indicator) indicator.remove();
+
+        appendChatMessage('bot', reply);
+    } catch (err) {
+        console.error('AI Chat error:', err);
+        const indicator = document.getElementById('aiTypingIndicator');
+        if (indicator) indicator.remove();
+        appendChatMessage('bot', `⚠️ Sorry, could not connect to Gemini AI: ${escapeHtml(err.message || 'Server error')}. Please check backend logs.`);
+    } finally {
+        if (sendBtn) sendBtn.disabled = false;
+        messagesBox.scrollTop = messagesBox.scrollHeight;
+    }
+}
+
+function appendChatMessage(sender, text) {
+    const messagesBox = document.getElementById('aiChatMessages');
+    if (!messagesBox) return;
+
+    const msgElem = document.createElement('div');
+    msgElem.className = `ai-msg ai-msg-${sender}`;
+
+    // Format simple markdown / linebreaks
+    const formatted = formatAiText(text);
+
+    msgElem.innerHTML = `<div class="ai-msg-bubble">${formatted}</div>`;
+    messagesBox.appendChild(msgElem);
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+}
+
+function formatAiText(text) {
+    if (!text) return '';
+    let escaped = escapeHtml(text);
+    // Bold **text**
+    escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    // Bullet points * item or - item
+    escaped = escaped.replace(/^[\*\-]\s+(.*)$/gm, '&bull; $1<br>');
+    // Line breaks
+    escaped = escaped.replace(/\n/g, '<br>');
+    return escaped;
+}
+
+async function handleClearAiHistory() {
+    try {
+        const response = await fetch(`${API_BASE}/clear`, { method: 'POST' });
+        const resText = await response.text();
+        showToast(resText || 'Conversation memory reset', 'success');
+
+        const messagesBox = document.getElementById('aiChatMessages');
+        if (messagesBox) {
+            messagesBox.innerHTML = `
+                <div class="ai-msg ai-msg-bot">
+                    <div class="ai-msg-bubble">
+                        Memory cleared! ✨ How can I guide you through Vishu's portfolio?
+                    </div>
+                    <div class="ai-quick-prompts">
+                        <button class="ai-quick-btn" onclick="sendAiQuickMessage('Give me a quick tour of Vishu\\'s portfolio')">🚀 Quick Tour</button>
+                        <button class="ai-quick-btn" onclick="sendAiQuickMessage('What are Vishu\\'s core backend skills?')">☕ Core Skills</button>
+                        <button class="ai-quick-btn" onclick="sendAiQuickMessage('Tell me about the featured projects')">💼 Top Projects</button>
+                    </div>
+                </div>
+            `;
+        }
+    } catch (err) {
+        console.error('Clear history error:', err);
+        showToast('Could not clear history', 'error');
+    }
 }
