@@ -24,8 +24,8 @@ public class ProfileController {
         return profileService.getallprofiles(profilerResponseDTO);
     }
     @GetMapping("/findByfullNameAndId")
-    public Profile findByfullNameAndId(@RequestParam String fullName , Long id){
-        return profileService.findByfullNameAndId(fullName,id);
+    public Profile findByfullNameAndId(@RequestParam("fullName") String fullName, @RequestParam("id") Long id){
+        return profileService.findByfullNameAndId(fullName, id);
     }
     @DeleteMapping("/DeleteByfullNameAndId/{fullName}/{id}")
     public ResponseEntity<String> DeleteByfullNameAndId( @PathVariable Long id,@PathVariable String fullName){

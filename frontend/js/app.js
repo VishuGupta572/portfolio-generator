@@ -151,6 +151,10 @@ function setupEventListeners() {
     // Modals Wiring
     setupModal('openAddProfileModalBtn', 'addProfileModal', 'closeAddProfileModal');
     setupModal('openSearchProfileModalBtn', 'searchProfileModal', 'closeSearchProfileModal');
+    const searchModalBtn = document.getElementById('openSearchProfileModalBtn');
+    if (searchModalBtn) {
+        searchModalBtn.addEventListener('click', updateSearchModalHints);
+    }
     setupModal(null, 'updateProfileModal', 'closeUpdateProfileModal');
     setupModal('openAddProjectModalBtn', 'addProjectModal', 'closeAddProjectModal');
     setupModal('openSearchProjectModalBtn', 'searchProjectModal', 'closeSearchProjectModal');
@@ -222,6 +226,7 @@ async function loadAllProfiles() {
         }
 
         renderProfilesList(allProfiles);
+        updateSearchModalHints();
     } catch (err) {
         console.warn('Profiles load error:', err);
         renderEmptyProfileState();
@@ -675,13 +680,23 @@ async function handleSearchProfile(e) {
         return;
     }
 
-    resultBox.innerHTML = '<p style="color: var(--text-dim);"><i class="fa-solid fa-circle-notch fa-spin"></i> Querying backend...</p>';
+    resultBox.innerHTML = '<p style="color: var(--text-dim);"><i class="fa-solid fa-circle-notch fa-spin"></i> Querying backend (GET /findByfullNameAndId)...</p>';
 
     try {
         const url = `${API_BASE}/findByfullNameAndId?fullName=${encodeURIComponent(fullName)}&id=${encodeURIComponent(id)}`;
         const response = await fetch(url);
-        if (!response.ok) throw new Error('Profile not found matching criteria');
-        const profile = await response.json();
+        
+        let profile = null;
+        if (response.ok) {
+            const text = await response.text();
+            if (text && text.trim().length > 0) {
+                try {
+                    profile = JSON.parse(text);
+                } catch (parseErr) {
+                    console.error('JSON parse error:', parseErr);
+                }
+            }
+        }
 
         if (profile && profile.fullName) {
             resultBox.innerHTML = `
@@ -698,17 +713,94 @@ async function handleSearchProfile(e) {
                         <div><i class="fa-solid fa-envelope" style="color: var(--secondary); margin-right: 6px;"></i> ${escapeHtml(profile.email || 'N/A')}</div>
                         <div><i class="fa-solid fa-location-dot" style="color: var(--secondary); margin-right: 6px;"></i> ${escapeHtml(profile.location || 'N/A')}</div>
                     </div>
-                    <button class="btn btn-primary btn-sm" style="width: 100%; justify-content: center;" onclick="selectPrimaryProfile(${profile.id}); document.getElementById('searchProfileModal').classList.remove('active');">
+                    <button class="btn btn-primary btn-sm" style="width: 100%; justify-content: center; margin-top: 10px;" onclick="selectPrimaryProfile(${profile.id}); document.getElementById('searchProfileModal').classList.remove('active');">
                         <i class="fa-solid fa-check"></i> Display on Portfolio
                     </button>
                 </div>
             `;
+            showToast(`Profile found for ${profile.fullName}!`, 'success');
         } else {
-            resultBox.innerHTML = '<p style="color: var(--danger); margin-top: 14px;">No profile found with that Name and ID.</p>';
+            // Friendly error with quick fill suggestion
+            let helperHtml = '';
+            if (allProfiles && allProfiles.length > 0) {
+                const chips = allProfiles.map(p => `
+                    <button type="button" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; padding: 4px 8px; margin: 3px;" onclick="autofillSearchProfile('${escapeHtml(p.fullName)}', ${p.id})">
+                        <i class="fa-solid fa-user-check"></i> ${escapeHtml(p.fullName)} (ID: ${p.id})
+                    </button>
+                `).join('');
+                helperHtml = `
+                    <div style="margin-top: 12px; padding: 10px; background: rgba(255, 255, 255, 0.04); border-radius: var(--radius-sm);">
+                        <p style="font-size: 0.8rem; color: var(--text-mid); margin-bottom: 6px;">
+                            <i class="fa-solid fa-lightbulb" style="color: var(--warning);"></i> Try searching one of these existing profiles in the database:
+                        </p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 4px;">${chips}</div>
+                    </div>
+                `;
+            } else {
+                helperHtml = `
+                    <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 8px;">
+                        No profiles are currently registered in the database. Use "+ Add Profile" in the navbar to create one first.
+                    </p>
+                `;
+            }
+
+            resultBox.innerHTML = `
+                <div style="margin-top: 14px; padding: 14px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: var(--radius-md);">
+                    <p style="color: var(--danger); font-size: 0.88rem; margin: 0; font-weight: 500;">
+                        <i class="fa-solid fa-circle-exclamation"></i> No profile found in database with Name "<strong>${escapeHtml(fullName)}</strong>" and ID <strong>${escapeHtml(id)}</strong>.
+                    </p>
+                    ${helperHtml}
+                </div>
+            `;
         }
     } catch (err) {
         console.error('Search error:', err);
-        resultBox.innerHTML = `<p style="color: var(--danger); margin-top: 14px;">${escapeHtml(err.message || 'Profile not found.')}</p>`;
+        resultBox.innerHTML = `<p style="color: var(--danger); margin-top: 14px;">Query failed: ${escapeHtml(err.message || 'Server error')}</p>`;
+    }
+}
+
+window.selectPrimaryProfile = function(profileId) {
+    const profile = (allProfiles || []).find(p => p.id == profileId);
+    if (profile) {
+        renderHeroProfile(profile);
+        showToast(`Displaying ${profile.fullName}'s profile!`, 'success');
+    }
+};
+
+window.autofillSearchProfile = function(name, id) {
+    const nameInput = document.getElementById('searchFullName');
+    const idInput = document.getElementById('searchId');
+    if (nameInput) nameInput.value = name;
+    if (idInput) idInput.value = id;
+    const form = document.getElementById('searchProfileForm');
+    if (form) {
+        form.dispatchEvent(new Event('submit', { cancelable: true }));
+    }
+};
+
+function updateSearchModalHints() {
+    const hintBox = document.getElementById('searchAvailableProfilesHint');
+    if (!hintBox) return;
+    if (allProfiles && allProfiles.length > 0) {
+        const chips = allProfiles.map(p => `
+            <button type="button" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; padding: 3px 8px; margin: 2px;" onclick="autofillSearchProfile('${escapeHtml(p.fullName)}', ${p.id})">
+                <i class="fa-solid fa-user"></i> ${escapeHtml(p.fullName)} (ID: ${p.id})
+            </button>
+        `).join('');
+        hintBox.innerHTML = `
+            <div style="padding: 10px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);">
+                <span style="color: var(--text-dim); display: block; font-size: 0.78rem; margin-bottom: 6px;">
+                    <i class="fa-solid fa-database" style="color: var(--secondary);"></i> Registered Profiles in Database (Click to auto-fill):
+                </span>
+                <div style="display: flex; flex-wrap: wrap; gap: 4px;">${chips}</div>
+            </div>
+        `;
+    } else {
+        hintBox.innerHTML = `
+            <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 4px;">
+                <i class="fa-solid fa-info-circle"></i> Database currently has 0 registered profiles. Add one first using "+ Add Profile".
+            </p>
+        `;
     }
 }
 
