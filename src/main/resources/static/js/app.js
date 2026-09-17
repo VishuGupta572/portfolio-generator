@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initApp() {
     setupNavigation();
     setupEventListeners();
+    setupTemplates();
     loadAllProfiles();
     loadAllProjects();
     loadAllSkills();
@@ -156,6 +157,7 @@ function setupEventListeners() {
     setupModal(null, 'updateProjectModal', 'closeUpdateProjectModal');
     setupModal('openAddSkillModalBtn', 'addSkillModal', 'closeAddSkillModal');
     setupModal('openAddSkillSectionBtn', 'addSkillModal', 'closeAddSkillModal');
+    setupModal('openTemplateModalBtn', 'templateGalleryModal', 'closeTemplateModal');
 
     // AI Tour Guide Chatbot Event Wiring
     setupAiChatbot();
@@ -1464,4 +1466,472 @@ async function handleClearAiHistory() {
         console.error('Clear history error:', err);
         showToast('Could not clear history', 'error');
     }
+}
+
+// =========================================================
+// 40 DEVELOPER PORTFOLIO TEMPLATES / THEMES SYSTEM
+// =========================================================
+
+const PORTFOLIO_TEMPLATES = [
+    // --- 1. MODERN DARK (8) ---
+    {
+        id: 'obsidian-pro',
+        name: 'Obsidian Pro',
+        category: 'dark',
+        categoryLabel: 'Modern Dark',
+        desc: 'Sleek ultra-dark background with vibrant indigo & cyan accents.',
+        swatches: ['#090d16', '#0f172a', '#6366f1', '#06b6d4']
+    },
+    {
+        id: 'nordic-frost',
+        name: 'Nordic Frost',
+        category: 'dark',
+        categoryLabel: 'Modern Dark',
+        desc: 'Cool Scandinavian blue-grey tones with icy blue highlights.',
+        swatches: ['#0f172a', '#1e293b', '#38bdf8', '#818cf8']
+    },
+    {
+        id: 'midnight-amethyst',
+        name: 'Midnight Amethyst',
+        category: 'dark',
+        categoryLabel: 'Modern Dark',
+        desc: 'Deep purple nocturnal atmosphere with glowing violet glows.',
+        swatches: ['#0f0728', '#1b0e3f', '#a855f7', '#ec4899']
+    },
+    {
+        id: 'slate-minimal',
+        name: 'Slate Minimal',
+        category: 'dark',
+        categoryLabel: 'Modern Dark',
+        desc: 'Pure matte neutral dark grey with clean sky blue accents.',
+        swatches: ['#121417', '#1c2024', '#0284c7', '#38bdf8']
+    },
+    {
+        id: 'emerald-matrix',
+        name: 'Emerald Matrix',
+        category: 'dark',
+        categoryLabel: 'Modern Dark',
+        desc: 'Deep forest green darkness with radiant emerald accents.',
+        swatches: ['#051b14', '#0d281e', '#10b981', '#34d399']
+    },
+    {
+        id: 'crimson-void',
+        name: 'Crimson Void',
+        category: 'dark',
+        categoryLabel: 'Modern Dark',
+        desc: 'Dark obsidian background punctuated with fiery ruby red.',
+        swatches: ['#14070a', '#240f15', '#f43f5e', '#fb7185']
+    },
+    {
+        id: 'aurora-borealis',
+        name: 'Aurora Borealis',
+        category: 'dark',
+        categoryLabel: 'Modern Dark',
+        desc: 'Arctic sky darkness inspired by green and teal northern lights.',
+        swatches: ['#07191d', '#0e2b32', '#14b8a6', '#2dd4bf']
+    },
+    {
+        id: 'carbon-stealth',
+        name: 'Carbon Stealth',
+        category: 'dark',
+        categoryLabel: 'Modern Dark',
+        desc: 'Monochromatic titanium dark grey with sharp silver accents.',
+        swatches: ['#0d0f12', '#171a1f', '#94a3b8', '#cbd5e1']
+    },
+
+    // --- 2. CYBERPUNK & RETRO TECH (8) ---
+    {
+        id: 'cyberpunk-2077',
+        name: 'Cyberpunk 2077',
+        category: 'cyber',
+        categoryLabel: 'Cyber & Retro',
+        desc: 'High contrast high-tech neon yellow and hot electric cyan.',
+        swatches: ['#0a0814', '#15102a', '#fcee0a', '#00f0ff']
+    },
+    {
+        id: 'synthwave-84',
+        name: 'Synthwave \'84',
+        category: 'cyber',
+        categoryLabel: 'Cyber & Retro',
+        desc: 'Nostalgic 1980s neon sunsets, magenta lasers, and teal grids.',
+        swatches: ['#1a0b2e', '#2b1055', '#ff2a85', '#00f0ff']
+    },
+    {
+        id: 'dracula-vampire',
+        name: 'Dracula Official',
+        category: 'cyber',
+        categoryLabel: 'Cyber & Retro',
+        desc: 'The iconic gothic developer theme with purple and pink.',
+        swatches: ['#21222c', '#282a36', '#bd93f9', '#ff79c6']
+    },
+    {
+        id: 'monokai-pro',
+        name: 'Monokai Pro',
+        category: 'cyber',
+        categoryLabel: 'Cyber & Retro',
+        desc: 'Sublime Text legend with vibrant lime green, gold, and coral.',
+        swatches: ['#221f22', '#2d2a2e', '#a9dc76', '#ffd866']
+    },
+    {
+        id: 'tokyo-night',
+        name: 'Tokyo Night',
+        category: 'cyber',
+        categoryLabel: 'Cyber & Retro',
+        desc: 'Downtown Shibuya nightlife with soft cornflower blues and magenta.',
+        swatches: ['#16161e', '#1a1b26', '#7aa2f7', '#bb9af7']
+    },
+    {
+        id: 'retro-terminal',
+        name: 'Amber Terminal',
+        category: 'cyber',
+        categoryLabel: 'Cyber & Retro',
+        desc: 'Vintage amber monochrome CRT monitor terminal look.',
+        swatches: ['#120c02', '#201605', '#f59e0b', '#fbbf24']
+    },
+    {
+        id: 'hacker-green',
+        name: 'Phosphor Hacker',
+        category: 'cyber',
+        categoryLabel: 'Cyber & Retro',
+        desc: 'Classic green phosphor CRT terminal for the true hacker aesthetic.',
+        swatches: ['#041208', '#092110', '#22c55e', '#4ade80']
+    },
+    {
+        id: 'gameboy-classic',
+        name: 'Game Boy DMG',
+        category: 'cyber',
+        categoryLabel: 'Cyber & Retro',
+        desc: 'Iconic 4-color olive-green dot matrix handheld console feel.',
+        swatches: ['#1c2818', '#2d3e26', '#8bac0f', '#9bbc0f']
+    },
+
+    // --- 3. MINIMALIST LIGHT (8) ---
+    {
+        id: 'clean-paper',
+        name: 'Clean Paper',
+        category: 'light',
+        categoryLabel: 'Minimalist Light',
+        desc: 'Editorial ivory white and crisp typography with indigo ink.',
+        swatches: ['#f8fafc', '#ffffff', '#4f46e5', '#0ea5e9']
+    },
+    {
+        id: 'arctic-snow',
+        name: 'Arctic Snow',
+        category: 'light',
+        categoryLabel: 'Minimalist Light',
+        desc: 'Crisp glacial white background with cool azure blue details.',
+        swatches: ['#f0f9ff', '#ffffff', '#0284c7', '#06b6d4']
+    },
+    {
+        id: 'cream-latte',
+        name: 'Cream Latte',
+        category: 'light',
+        categoryLabel: 'Minimalist Light',
+        desc: 'Warm comforting milk coffee and espresso brown palette.',
+        swatches: ['#faf7f2', '#ffffff', '#b45309', '#d97706']
+    },
+    {
+        id: 'rose-blush',
+        name: 'RosÃ© Blush',
+        category: 'light',
+        categoryLabel: 'Minimalist Light',
+        desc: 'Soft pastel pink aesthetic with elegant raspberry accents.',
+        swatches: ['#fff1f2', '#ffffff', '#e11d48', '#f43f5e']
+    },
+    {
+        id: 'github-canvas',
+        name: 'GitHub Light',
+        category: 'light',
+        categoryLabel: 'Minimalist Light',
+        desc: 'Signature GitHub developer light mode with royal blue.',
+        swatches: ['#f6f8fa', '#ffffff', '#0969da', '#1f883d']
+    },
+    {
+        id: 'lavender-mist',
+        name: 'Lavender Mist',
+        category: 'light',
+        categoryLabel: 'Minimalist Light',
+        desc: 'Delicate floral lavender haze with rich royal violet elements.',
+        swatches: ['#faf5ff', '#ffffff', '#9333ea', '#a855f7']
+    },
+    {
+        id: 'peach-sorbet',
+        name: 'Peach Sorbet',
+        category: 'light',
+        categoryLabel: 'Minimalist Light',
+        desc: 'Sunlit warm peach and orange tones for an inviting creative vibe.',
+        swatches: ['#fff7ed', '#ffffff', '#ea580c', '#f97316']
+    },
+    {
+        id: 'solarized-light',
+        name: 'Solarized Light',
+        category: 'light',
+        categoryLabel: 'Minimalist Light',
+        desc: 'Precision scientific solarized palette engineered by Ethan Schoonover.',
+        swatches: ['#fdf6e3', '#eee8d5', '#268bd2', '#2aa198']
+    },
+
+    // --- 4. NATURE & EARTH (8) ---
+    {
+        id: 'forest-moss',
+        name: 'Forest Moss',
+        category: 'earth',
+        categoryLabel: 'Nature & Earth',
+        desc: 'Calming pine needle green with warm sunlight amber rays.',
+        swatches: ['#0d1912', '#162b20', '#10b981', '#f59e0b']
+    },
+    {
+        id: 'sahara-dune',
+        name: 'Sahara Dune',
+        category: 'earth',
+        categoryLabel: 'Nature & Earth',
+        desc: 'Warm desert dunes and golden sand with sunlit terracotta.',
+        swatches: ['#1a140d', '#2c2217', '#d97706', '#f59e0b']
+    },
+    {
+        id: 'deep-ocean',
+        name: 'Deep Ocean',
+        category: 'earth',
+        categoryLabel: 'Nature & Earth',
+        desc: 'Abyssal oceanic dark blues with bioluminescent turquoise.',
+        swatches: ['#071426', '#0f243d', '#0284c7', '#06b6d4']
+    },
+    {
+        id: 'autumn-maple',
+        name: 'Autumn Maple',
+        category: 'earth',
+        categoryLabel: 'Nature & Earth',
+        desc: 'Fallen October red maple leaves with golden amber reflections.',
+        swatches: ['#1c0c08', '#2e1610', '#ea580c', '#e11d48']
+    },
+    {
+        id: 'desert-sage',
+        name: 'Desert Sage',
+        category: 'earth',
+        categoryLabel: 'Nature & Earth',
+        desc: 'Earthy botanical sage grey-green with warm gold accents.',
+        swatches: ['#131a16', '#1e2b24', '#84cc16', '#a3e635']
+    },
+    {
+        id: 'volcanic-magma',
+        name: 'Volcanic Magma',
+        category: 'earth',
+        categoryLabel: 'Nature & Earth',
+        desc: 'Dark basalt obsidian rock flowing with glowing orange lava.',
+        swatches: ['#180a06', '#2b120c', '#f97316', '#ef4444']
+    },
+    {
+        id: 'copper-canyon',
+        name: 'Copper Canyon',
+        category: 'earth',
+        categoryLabel: 'Nature & Earth',
+        desc: 'Southwestern red rock canyon with burnished bronze & copper.',
+        swatches: ['#1c100a', '#2d1c13', '#c2410c', '#fb923c']
+    },
+    {
+        id: 'terracotta-sun',
+        name: 'Terracotta Sun',
+        category: 'earth',
+        categoryLabel: 'Nature & Earth',
+        desc: 'Mediterranean clay pottery baked under vibrant sunset light.',
+        swatches: ['#1a0f12', '#2c181c', '#e11d48', '#f97316']
+    },
+
+    // --- 5. VIBRANT & NEON (8) ---
+    {
+        id: 'hyper-violet',
+        name: 'Hyper Violet',
+        category: 'vibrant',
+        categoryLabel: 'Vibrant & Neon',
+        desc: 'Supercharged electric ultraviolet with vivid fuchsia energy.',
+        swatches: ['#0c061a', '#170c31', '#9333ea', '#c084fc']
+    },
+    {
+        id: 'electric-indigo',
+        name: 'Electric Indigo',
+        category: 'vibrant',
+        categoryLabel: 'Vibrant & Neon',
+        desc: 'Intense high-voltage indigo paired with hyper-cyan beams.',
+        swatches: ['#080a1c', '#101533', '#4f46e5', '#38bdf8']
+    },
+    {
+        id: 'cosmic-sunset',
+        name: 'Cosmic Sunset',
+        category: 'vibrant',
+        categoryLabel: 'Vibrant & Neon',
+        desc: 'Galactic twilight blending radiant violet and sunset orange.',
+        swatches: ['#12081c', '#200e31', '#d946ef', '#f97316']
+    },
+    {
+        id: 'supercharged-cyan',
+        name: 'Supercharged Cyan',
+        category: 'vibrant',
+        categoryLabel: 'Vibrant & Neon',
+        desc: 'Laser aqua glow against deep underwater midnight black.',
+        swatches: ['#04141a', '#082530', '#06b6d4', '#22d3ee']
+    },
+    {
+        id: 'neon-lime',
+        name: 'Neon Lime',
+        category: 'vibrant',
+        categoryLabel: 'Vibrant & Neon',
+        desc: 'Kinetic cyber lime green popping against pure carbon night.',
+        swatches: ['#091204', '#122409', '#84cc16', '#a3e635']
+    },
+    {
+        id: 'magenta-fury',
+        name: 'Magenta Fury',
+        category: 'vibrant',
+        categoryLabel: 'Vibrant & Neon',
+        desc: 'Bold neon hot magenta paired with blazing purple lightning.',
+        swatches: ['#190412', '#2d0821', '#ec4899', '#f43f5e']
+    },
+    {
+        id: 'quantum-realm',
+        name: 'Quantum Realm',
+        category: 'vibrant',
+        categoryLabel: 'Vibrant & Neon',
+        desc: 'Subatomic particle glow with electric teal and neon violet.',
+        swatches: ['#070d1d', '#0e1a38', '#6366f1', '#14b8a6']
+    },
+    {
+        id: 'solar-flare',
+        name: 'Solar Flare',
+        category: 'vibrant',
+        categoryLabel: 'Vibrant & Neon',
+        desc: 'Nuclear solar corona with molten gold and blazing crimson fire.',
+        swatches: ['#180a02', '#2d1405', '#f59e0b', '#ef4444']
+    }
+];
+
+let currentTemplateCategory = 'all';
+let currentTemplateSearchQuery = '';
+
+function setupTemplates() {
+    // 1. Read stored template from localStorage, default to 'obsidian-pro'
+    const savedTemplate = localStorage.getItem('portfolioTemplate') || 'obsidian-pro';
+    applyTemplate(savedTemplate, false);
+
+    // 2. Setup category filter button clicks
+    const filterTabs = document.getElementById('templateFilterTabs');
+    if (filterTabs) {
+        filterTabs.addEventListener('click', (e) => {
+            const btn = e.target.closest('.tpl-filter-btn');
+            if (!btn) return;
+            filterTabs.querySelectorAll('.tpl-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentTemplateCategory = btn.getAttribute('data-category') || 'all';
+            renderTemplatesGrid();
+        });
+    }
+
+    // 3. Setup live search input
+    const searchInput = document.getElementById('templateSearchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentTemplateSearchQuery = e.target.value.trim().toLowerCase();
+            renderTemplatesGrid();
+        });
+    }
+
+    // 4. Initial render of the grid
+    renderTemplatesGrid();
+}
+
+function applyTemplate(themeId, showNotification = true) {
+    const valid = PORTFOLIO_TEMPLATES.find(t => t.id === themeId);
+    const resolvedId = valid ? themeId : 'obsidian-pro';
+    const themeObj = valid || PORTFOLIO_TEMPLATES[0];
+
+    document.documentElement.setAttribute('data-theme', resolvedId);
+    localStorage.setItem('portfolioTemplate', resolvedId);
+
+    // Update active state in grid cards
+    const allCards = document.querySelectorAll('.template-card');
+    allCards.forEach(card => {
+        if (card.getAttribute('data-id') === resolvedId) {
+            card.classList.add('active-theme');
+            const badge = card.querySelector('.template-active-badge');
+            if (badge) badge.style.display = 'inline-flex';
+            const btnSpan = card.querySelector('.template-apply-btn span');
+            if (btnSpan) btnSpan.textContent = 'Selected';
+        } else {
+            card.classList.remove('active-theme');
+            const badge = card.querySelector('.template-active-badge');
+            if (badge) badge.style.display = 'none';
+            const btnSpan = card.querySelector('.template-apply-btn span');
+            if (btnSpan) btnSpan.textContent = 'Use Template';
+        }
+    });
+
+    if (showNotification) {
+        showToast(`Template changed to "${themeObj.name}"!`, 'success');
+    }
+}
+
+function renderTemplatesGrid() {
+    const grid = document.getElementById('templatesGrid');
+    const badge = document.getElementById('templateCountBadge');
+    if (!grid) return;
+
+    const activeThemeId = document.documentElement.getAttribute('data-theme') || localStorage.getItem('portfolioTemplate') || 'obsidian-pro';
+
+    const filtered = PORTFOLIO_TEMPLATES.filter(tpl => {
+        const matchesCategory = currentTemplateCategory === 'all' || tpl.category === currentTemplateCategory;
+        const matchesSearch = !currentTemplateSearchQuery || 
+            tpl.name.toLowerCase().includes(currentTemplateSearchQuery) ||
+            tpl.categoryLabel.toLowerCase().includes(currentTemplateSearchQuery) ||
+            tpl.desc.toLowerCase().includes(currentTemplateSearchQuery);
+        return matchesCategory && matchesSearch;
+    });
+
+    if (badge) {
+        badge.textContent = `${filtered.length} of ${PORTFOLIO_TEMPLATES.length} Themes`;
+    }
+
+    if (filtered.length === 0) {
+        grid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-dim);">
+                <i class="fa-solid fa-palette" style="font-size: 2.2rem; margin-bottom: 12px; display: block; opacity: 0.5;"></i>
+                <p style="font-size: 1rem; margin-bottom: 6px;">No templates found matching "<strong>${escapeHtml(currentTemplateSearchQuery)}</strong>"</p>
+                <button class="btn btn-secondary btn-sm" onclick="document.getElementById('templateSearchInput').value=''; currentTemplateSearchQuery=''; renderTemplatesGrid();">
+                    Clear Search
+                </button>
+            </div>
+        `;
+        return;
+    }
+
+    grid.innerHTML = filtered.map(tpl => {
+        const isActive = tpl.id === activeThemeId;
+        const swatchesHtml = tpl.swatches.map(color => `
+            <div class="template-swatch" style="background-color: ${color};" title="${color}"></div>
+        `).join('');
+
+        return `
+            <div class="template-card ${isActive ? 'active-theme' : ''}" data-id="${tpl.id}" onclick="applyTemplate('${tpl.id}')">
+                <div class="template-card-header">
+                    <div class="template-swatches-row">
+                        ${swatchesHtml}
+                    </div>
+                    <span class="template-category-tag">${escapeHtml(tpl.categoryLabel)}</span>
+                </div>
+                <div class="template-card-body">
+                    <div class="template-name-row">
+                        <h4 class="template-name">${escapeHtml(tpl.name)}</h4>
+                        <span class="template-active-badge" style="display: ${isActive ? 'inline-flex' : 'none'};">
+                            <i class="fa-solid fa-circle-check"></i> Active
+                        </span>
+                    </div>
+                    <p class="template-desc">${escapeHtml(tpl.desc)}</p>
+                </div>
+                <div class="template-card-footer">
+                    <button class="template-apply-btn" type="button">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>${isActive ? 'Selected' : 'Use Template'}</span>
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
 }

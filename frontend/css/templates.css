@@ -1,0 +1,1123 @@
+﻿/* =========================================================
+   PORTFOLIO GENERATOR - 40 THEME TEMPLATES ENGINE
+   Includes Gallery Modal Styles + 40 Curated Theme Palettes
+   ========================================================= */
+
+/* Template Modal Overrides */
+.template-modal {
+    max-width: 1050px !important;
+    width: 95% !important;
+    max-height: 90vh !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.template-gallery-header {
+    margin-bottom: 20px;
+}
+
+.template-search-row {
+    display: flex;
+    gap: 12px;
+    margin: 16px 0 12px 0;
+    flex-wrap: wrap;
+}
+
+.template-search-box {
+    flex: 1;
+    min-width: 240px;
+    position: relative;
+}
+
+.template-search-box i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+}
+
+.template-search-input {
+    width: 100%;
+    padding: 10px 14px 10px 38px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-high);
+    font-size: 0.9rem;
+    font-family: var(--font-sans);
+    transition: var(--transition);
+}
+
+.template-search-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.07);
+}
+
+/* Category Filter Tabs */
+.template-category-nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+}
+
+.template-cat-pill {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-mid);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--transition);
+}
+
+.template-cat-pill:hover,
+.template-cat-pill.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+/* Gallery Grid */
+.template-grid-scroll {
+    overflow-y: auto;
+    max-height: 58vh;
+    padding-right: 6px;
+    margin-top: 10px;
+}
+
+.template-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+/* Template Card */
+.template-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.template-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.template-card.is-active {
+    border-color: var(--secondary);
+    box-shadow: 0 0 16px var(--secondary-glow);
+}
+
+.template-card-preview {
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px;
+    position: relative;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.template-swatch-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.template-swatch {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.template-active-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--secondary);
+    color: #000;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: none;
+}
+
+.template-card.is-active .template-active-badge {
+    display: inline-block;
+}
+
+.template-card-info {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.template-card-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-high);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.template-card-desc {
+    font-size: 0.75rem;
+    color: var(--text-low);
+    line-height: 1.3;
+    margin-bottom: 10px;
+    flex: 1;
+}
+
+.template-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.template-cat-tag {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+}
+
+.btn-apply-template {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-high);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-apply-template:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.template-card.is-active .btn-apply-template {
+    background: var(--secondary);
+    border-color: var(--secondary);
+    color: #000;
+    font-weight: 600;
+}
+
+/* =========================================================
+   THE 40 THEME PALETTES (DATA-THEME SELECTORS)
+   ========================================================= */
+
+/* --- GROUP 1: MODERN DARK DEVELOPER (10) --- */
+
+/* 1. Obsidian Pro (Default) */
+[data-theme="obsidian-pro"] {
+    --bg-base: #080b11;
+    --bg-surface: #0e1420;
+    --bg-card: rgba(16, 23, 38, 0.85);
+    --bg-card-hover: rgba(22, 32, 54, 0.95);
+    --border-subtle: rgba(255, 255, 255, 0.07);
+    --border-hover: rgba(99, 102, 241, 0.4);
+    --border-focus: #6366f1;
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --primary-glow: rgba(99, 102, 241, 0.25);
+    --secondary: #06b6d4;
+    --secondary-glow: rgba(6, 182, 212, 0.2);
+    --accent-grad: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);
+    --text-high: #f8fafc;
+    --text-mid: #cbd5e1;
+    --text-low: #94a3b8;
+    --text-dim: #64748b;
+}
+
+/* 2. Tokyo Night */
+[data-theme="tokyo-night"] {
+    --bg-base: #1a1b26;
+    --bg-surface: #24283b;
+    --bg-card: rgba(36, 40, 59, 0.85);
+    --bg-card-hover: rgba(45, 50, 74, 0.95);
+    --border-subtle: rgba(255, 255, 255, 0.09);
+    --border-hover: rgba(122, 162, 247, 0.45);
+    --border-focus: #7aa2f7;
+    --primary: #7aa2f7;
+    --primary-hover: #608ee8;
+    --primary-glow: rgba(122, 162, 247, 0.25);
+    --secondary: #bb9af7;
+    --secondary-glow: rgba(187, 154, 247, 0.2);
+    --accent-grad: linear-gradient(135deg, #7aa2f7 0%, #bb9af7 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(122, 162, 247, 0.15) 0%, rgba(187, 154, 247, 0.1) 100%);
+    --text-high: #c0caf5;
+    --text-mid: #a9b1d6;
+    --text-low: #787c99;
+    --text-dim: #565f89;
+}
+
+/* 3. Dracula Midnight */
+[data-theme="dracula-midnight"] {
+    --bg-base: #1e1f29;
+    --bg-surface: #282a36;
+    --bg-card: rgba(40, 42, 54, 0.85);
+    --bg-card-hover: rgba(52, 55, 70, 0.95);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(189, 147, 249, 0.45);
+    --border-focus: #bd93f9;
+    --primary: #bd93f9;
+    --primary-hover: #a574f5;
+    --primary-glow: rgba(189, 147, 249, 0.25);
+    --secondary: #ff79c6;
+    --secondary-glow: rgba(255, 121, 198, 0.25);
+    --accent-grad: linear-gradient(135deg, #bd93f9 0%, #ff79c6 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(189, 147, 249, 0.15) 0%, rgba(255, 121, 198, 0.1) 100%);
+    --text-high: #f8f8f2;
+    --text-mid: #e2e2dc;
+    --text-low: #bfbfb8;
+    --text-dim: #6272a4;
+}
+
+/* 4. One Dark Pro */
+[data-theme="one-dark-pro"] {
+    --bg-base: #21252b;
+    --bg-surface: #282c34;
+    --bg-card: rgba(40, 44, 52, 0.88);
+    --bg-card-hover: rgba(50, 56, 66, 0.95);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(97, 175, 239, 0.4);
+    --border-focus: #61afef;
+    --primary: #61afef;
+    --primary-hover: #489be0;
+    --primary-glow: rgba(97, 175, 239, 0.25);
+    --secondary: #98c379;
+    --secondary-glow: rgba(152, 195, 121, 0.25);
+    --accent-grad: linear-gradient(135deg, #61afef 0%, #98c379 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(97, 175, 239, 0.15) 0%, rgba(152, 195, 121, 0.1) 100%);
+    --text-high: #abb2bf;
+    --text-mid: #9da5b4;
+    --text-low: #828997;
+    --text-dim: #5c6370;
+}
+
+/* 5. Nord Frost */
+[data-theme="nord-frost"] {
+    --bg-base: #242933;
+    --bg-surface: #2e3440;
+    --bg-card: rgba(46, 52, 64, 0.88);
+    --bg-card-hover: rgba(59, 66, 82, 0.95);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(136, 192, 208, 0.45);
+    --border-focus: #88c0d0;
+    --primary: #88c0d0;
+    --primary-hover: #81a1c1;
+    --primary-glow: rgba(136, 192, 208, 0.25);
+    --secondary: #8fbcbb;
+    --secondary-glow: rgba(143, 188, 187, 0.25);
+    --accent-grad: linear-gradient(135deg, #88c0d0 0%, #81a1c1 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(136, 192, 208, 0.15) 0%, rgba(129, 161, 193, 0.1) 100%);
+    --text-high: #eceff4;
+    --text-mid: #e5e9f0;
+    --text-low: #d8dee9;
+    --text-dim: #4c566a;
+}
+
+/* 6. Deep Space Nebula */
+[data-theme="deep-space"] {
+    --bg-base: #060913;
+    --bg-surface: #0c1222;
+    --bg-card: rgba(14, 20, 38, 0.85);
+    --bg-card-hover: rgba(20, 28, 52, 0.95);
+    --border-subtle: rgba(139, 92, 246, 0.15);
+    --border-hover: rgba(139, 92, 246, 0.45);
+    --border-focus: #8b5cf6;
+    --primary: #8b5cf6;
+    --primary-hover: #7c3aed;
+    --primary-glow: rgba(139, 92, 246, 0.3);
+    --secondary: #38bdf8;
+    --secondary-glow: rgba(56, 189, 248, 0.25);
+    --accent-grad: linear-gradient(135deg, #8b5cf6 0%, #38bdf8 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(56, 189, 248, 0.1) 100%);
+    --text-high: #f1f5f9;
+    --text-mid: #cbd5e1;
+    --text-low: #94a3b8;
+    --text-dim: #475569;
+}
+
+/* 7. Moonlight Slate */
+[data-theme="moonlight-slate"] {
+    --bg-base: #11141a;
+    --bg-surface: #181d26;
+    --bg-card: rgba(24, 29, 38, 0.85);
+    --bg-card-hover: rgba(32, 39, 51, 0.95);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(148, 163, 184, 0.4);
+    --border-focus: #94a3b8;
+    --primary: #38bdf8;
+    --primary-hover: #0284c7;
+    --primary-glow: rgba(56, 189, 248, 0.25);
+    --secondary: #94a3b8;
+    --secondary-glow: rgba(148, 163, 184, 0.2);
+    --accent-grad: linear-gradient(135deg, #38bdf8 0%, #cbd5e1 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(203, 213, 225, 0.1) 100%);
+    --text-high: #f8fafc;
+    --text-mid: #cbd5e1;
+    --text-low: #94a3b8;
+    --text-dim: #64748b;
+}
+
+/* 8. Midnight Cobalt */
+[data-theme="midnight-cobalt"] {
+    --bg-base: #050d1a;
+    --bg-surface: #0a1931;
+    --bg-card: rgba(12, 29, 58, 0.85);
+    --bg-card-hover: rgba(18, 42, 82, 0.95);
+    --border-subtle: rgba(0, 150, 255, 0.15);
+    --border-hover: rgba(0, 150, 255, 0.45);
+    --border-focus: #0096ff;
+    --primary: #0096ff;
+    --primary-hover: #007acc;
+    --primary-glow: rgba(0, 150, 255, 0.3);
+    --secondary: #00e5ff;
+    --secondary-glow: rgba(0, 229, 255, 0.25);
+    --accent-grad: linear-gradient(135deg, #0096ff 0%, #00e5ff 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(0, 150, 255, 0.2) 0%, rgba(0, 229, 255, 0.1) 100%);
+    --text-high: #e6f4ff;
+    --text-mid: #b3d9ff;
+    --text-low: #80bfff;
+    --text-dim: #407fa8;
+}
+
+/* 9. Cyber Charcoal */
+[data-theme="cyber-charcoal"] {
+    --bg-base: #121214;
+    --bg-surface: #1a1a1e;
+    --bg-card: rgba(28, 28, 33, 0.88);
+    --bg-card-hover: rgba(38, 38, 45, 0.95);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(249, 115, 22, 0.4);
+    --border-focus: #f97316;
+    --primary: #f97316;
+    --primary-hover: #ea580c;
+    --primary-glow: rgba(249, 115, 22, 0.25);
+    --secondary: #fb923c;
+    --secondary-glow: rgba(251, 146, 60, 0.2);
+    --accent-grad: linear-gradient(135deg, #f97316 0%, #fbbf24 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(251, 191, 36, 0.1) 100%);
+    --text-high: #fafafa;
+    --text-mid: #d4d4d8;
+    --text-low: #a1a1aa;
+    --text-dim: #71717a;
+}
+
+/* 10. Eclipse Black (Pure OLED) */
+[data-theme="eclipse-black"] {
+    --bg-base: #000000;
+    --bg-surface: #0a0a0a;
+    --bg-card: rgba(18, 18, 18, 0.9);
+    --bg-card-hover: rgba(28, 28, 28, 0.95);
+    --border-subtle: rgba(255, 255, 255, 0.12);
+    --border-hover: rgba(255, 255, 255, 0.35);
+    --border-focus: #ffffff;
+    --primary: #e11d48;
+    --primary-hover: #be123c;
+    --primary-glow: rgba(225, 29, 72, 0.3);
+    --secondary: #f43f5e;
+    --secondary-glow: rgba(244, 63, 94, 0.2);
+    --accent-grad: linear-gradient(135deg, #e11d48 0%, #f43f5e 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(225, 29, 72, 0.2) 0%, rgba(244, 63, 94, 0.1) 100%);
+    --text-high: #ffffff;
+    --text-mid: #e5e5e5;
+    --text-low: #a3a3a3;
+    --text-dim: #525252;
+}
+
+/* --- GROUP 2: CYBERPUNK & RETRO TECH (8) --- */
+
+/* 11. Cyberpunk 2077 */
+[data-theme="cyberpunk-2077"] {
+    --bg-base: #0d0221;
+    --bg-surface: #19053b;
+    --bg-card: rgba(28, 8, 64, 0.85);
+    --bg-card-hover: rgba(40, 12, 90, 0.95);
+    --border-subtle: rgba(254, 240, 1, 0.2);
+    --border-hover: rgba(0, 240, 255, 0.5);
+    --border-focus: #00f0ff;
+    --primary: #fcee0a;
+    --primary-hover: #e5d705;
+    --primary-glow: rgba(252, 238, 10, 0.35);
+    --secondary: #00f0ff;
+    --secondary-glow: rgba(0, 240, 255, 0.35);
+    --accent-grad: linear-gradient(135deg, #fcee0a 0%, #00f0ff 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(252, 238, 10, 0.2) 0%, rgba(0, 240, 255, 0.15) 100%);
+    --text-high: #ffffff;
+    --text-mid: #fdf599;
+    --text-low: #7df9ff;
+    --text-dim: #71359c;
+}
+
+/* 12. Synthwave Sunset */
+[data-theme="synthwave-sunset"] {
+    --bg-base: #1a0b2e;
+    --bg-surface: #261245;
+    --bg-card: rgba(43, 19, 77, 0.85);
+    --bg-card-hover: rgba(58, 26, 104, 0.95);
+    --border-subtle: rgba(255, 42, 109, 0.2);
+    --border-hover: rgba(5, 217, 232, 0.5);
+    --border-focus: #05d9e8;
+    --primary: #ff2a6d;
+    --primary-hover: #e01d5a;
+    --primary-glow: rgba(255, 42, 109, 0.35);
+    --secondary: #05d9e8;
+    --secondary-glow: rgba(5, 217, 232, 0.35);
+    --accent-grad: linear-gradient(135deg, #ff2a6d 0%, #05d9e8 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(255, 42, 109, 0.2) 0%, rgba(5, 217, 232, 0.15) 100%);
+    --text-high: #f9f871;
+    --text-mid: #d1f7ff;
+    --text-low: #d4a5ff;
+    --text-dim: #6c4b82;
+}
+
+/* 13. Matrix Terminal (Phosphor Green) */
+[data-theme="matrix-terminal"] {
+    --bg-base: #030a04;
+    --bg-surface: #061508;
+    --bg-card: rgba(8, 28, 12, 0.88);
+    --bg-card-hover: rgba(12, 42, 18, 0.95);
+    --border-subtle: rgba(0, 255, 65, 0.2);
+    --border-hover: rgba(0, 255, 65, 0.5);
+    --border-focus: #00ff41;
+    --primary: #00ff41;
+    --primary-hover: #00d636;
+    --primary-glow: rgba(0, 255, 65, 0.35);
+    --secondary: #008f11;
+    --secondary-glow: rgba(0, 143, 17, 0.3);
+    --accent-grad: linear-gradient(135deg, #00ff41 0%, #008f11 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(0, 255, 65, 0.2) 0%, rgba(0, 143, 17, 0.1) 100%);
+    --text-high: #d2fedb;
+    --text-mid: #00ff41;
+    --text-low: #54b966;
+    --text-dim: #256631;
+}
+
+/* 14. Amber Vintage Terminal */
+[data-theme="amber-crt"] {
+    --bg-base: #0d0800;
+    --bg-surface: #1a1002;
+    --bg-card: rgba(33, 20, 4, 0.88);
+    --bg-card-hover: rgba(48, 29, 6, 0.95);
+    --border-subtle: rgba(255, 176, 0, 0.2);
+    --border-hover: rgba(255, 176, 0, 0.5);
+    --border-focus: #ffb000;
+    --primary: #ffb000;
+    --primary-hover: #e09b00;
+    --primary-glow: rgba(255, 176, 0, 0.35);
+    --secondary: #ff8000;
+    --secondary-glow: rgba(255, 128, 0, 0.3);
+    --accent-grad: linear-gradient(135deg, #ffb000 0%, #ff8000 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(255, 176, 0, 0.2) 0%, rgba(255, 128, 0, 0.1) 100%);
+    --text-high: #fff1cc;
+    --text-mid: #ffcc66;
+    --text-low: #d99b26;
+    --text-dim: #8c5a08;
+}
+
+/* 15. Cyan Circuit */
+[data-theme="cyan-circuit"] {
+    --bg-base: #021217;
+    --bg-surface: #041f26;
+    --bg-card: rgba(6, 38, 48, 0.85);
+    --bg-card-hover: rgba(9, 52, 66, 0.95);
+    --border-subtle: rgba(0, 245, 255, 0.18);
+    --border-hover: rgba(0, 245, 255, 0.45);
+    --border-focus: #00f5ff;
+    --primary: #00f5ff;
+    --primary-hover: #00c7d1;
+    --primary-glow: rgba(0, 245, 255, 0.3);
+    --secondary: #00b4d8;
+    --secondary-glow: rgba(0, 180, 216, 0.25);
+    --accent-grad: linear-gradient(135deg, #00f5ff 0%, #0077b6 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(0, 245, 255, 0.15) 0%, rgba(0, 119, 182, 0.1) 100%);
+    --text-high: #e0faff;
+    --text-mid: #99f0ff;
+    --text-low: #5cd6eb;
+    --text-dim: #267380;
+}
+
+/* 16. Electric Violet */
+[data-theme="electric-violet"] {
+    --bg-base: #130324;
+    --bg-surface: #20073b;
+    --bg-card: rgba(42, 10, 77, 0.85);
+    --bg-card-hover: rgba(58, 14, 107, 0.95);
+    --border-subtle: rgba(168, 85, 247, 0.2);
+    --border-hover: rgba(217, 70, 239, 0.45);
+    --border-focus: #d946ef;
+    --primary: #a855f7;
+    --primary-hover: #9333ea;
+    --primary-glow: rgba(168, 85, 247, 0.3);
+    --secondary: #d946ef;
+    --secondary-glow: rgba(217, 70, 239, 0.25);
+    --accent-grad: linear-gradient(135deg, #a855f7 0%, #d946ef 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(217, 70, 239, 0.1) 100%);
+    --text-high: #fbf5ff;
+    --text-mid: #e9d5ff;
+    --text-low: #c084fc;
+    --text-dim: #6b21a8;
+}
+
+/* 17. Hyperdrive Laser */
+[data-theme="hyperdrive-laser"] {
+    --bg-base: #140505;
+    --bg-surface: #240a0a;
+    --bg-card: rgba(46, 13, 13, 0.85);
+    --bg-card-hover: rgba(64, 18, 18, 0.95);
+    --border-subtle: rgba(239, 68, 68, 0.2);
+    --border-hover: rgba(249, 115, 22, 0.5);
+    --border-focus: #ef4444;
+    --primary: #ef4444;
+    --primary-hover: #dc2626;
+    --primary-glow: rgba(239, 68, 68, 0.35);
+    --secondary: #f97316;
+    --secondary-glow: rgba(249, 115, 22, 0.25);
+    --accent-grad: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(249, 115, 22, 0.1) 100%);
+    --text-high: #fff1f2;
+    --text-mid: #fecdd3;
+    --text-low: #f87171;
+    --text-dim: #7f1d1d;
+}
+
+/* 18. Quantum Plasma */
+[data-theme="quantum-plasma"] {
+    --bg-base: #030814;
+    --bg-surface: #07122b;
+    --bg-card: rgba(10, 26, 61, 0.85);
+    --bg-card-hover: rgba(15, 38, 89, 0.95);
+    --border-subtle: rgba(34, 197, 94, 0.2);
+    --border-hover: rgba(6, 182, 212, 0.5);
+    --border-focus: #22c55e;
+    --primary: #22c55e;
+    --primary-hover: #16a34a;
+    --primary-glow: rgba(34, 197, 94, 0.3);
+    --secondary: #06b6d4;
+    --secondary-glow: rgba(6, 182, 212, 0.25);
+    --accent-grad: linear-gradient(135deg, #22c55e 0%, #06b6d4 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%);
+    --text-high: #f0fdf4;
+    --text-mid: #bbf7d0;
+    --text-low: #86efac;
+    --text-dim: #166534;
+}
+
+/* --- GROUP 3: MINIMALIST & CLEAN LIGHT (8) --- */
+
+/* 19. Swiss Minimal White */
+[data-theme="swiss-minimal"] {
+    --bg-base: #f8f9fa;
+    --bg-surface: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.95);
+    --bg-card-hover: #ffffff;
+    --border-subtle: rgba(0, 0, 0, 0.08);
+    --border-hover: rgba(225, 29, 72, 0.4);
+    --border-focus: #e11d48;
+    --primary: #e11d48;
+    --primary-hover: #be123c;
+    --primary-glow: rgba(225, 29, 72, 0.15);
+    --secondary: #0f172a;
+    --secondary-glow: rgba(15, 23, 42, 0.1);
+    --accent-grad: linear-gradient(135deg, #e11d48 0%, #0f172a 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(225, 29, 72, 0.08) 0%, rgba(15, 23, 42, 0.04) 100%);
+    --text-high: #0f172a;
+    --text-mid: #334155;
+    --text-low: #64748b;
+    --text-dim: #94a3b8;
+}
+
+/* 20. Cupertino Clean */
+[data-theme="cupertino-clean"] {
+    --bg-base: #f5f5f7;
+    --bg-surface: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.9);
+    --bg-card-hover: #ffffff;
+    --border-subtle: rgba(0, 0, 0, 0.06);
+    --border-hover: rgba(0, 113, 227, 0.35);
+    --border-focus: #0071e3;
+    --primary: #0071e3;
+    --primary-hover: #0056b3;
+    --primary-glow: rgba(0, 113, 227, 0.18);
+    --secondary: #2c2c2e;
+    --secondary-glow: rgba(44, 44, 46, 0.1);
+    --accent-grad: linear-gradient(135deg, #0071e3 0%, #5ac8fa 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(0, 113, 227, 0.08) 0%, rgba(90, 200, 250, 0.05) 100%);
+    --text-high: #1d1d1f;
+    --text-mid: #515154;
+    --text-low: #86868b;
+    --text-dim: #a1a1a6;
+}
+
+/* 21. Monochrome Executive */
+[data-theme="monochrome-exec"] {
+    --bg-base: #ffffff;
+    --bg-surface: #f4f4f5;
+    --bg-card: rgba(244, 244, 245, 0.95);
+    --bg-card-hover: #ffffff;
+    --border-subtle: rgba(0, 0, 0, 0.1);
+    --border-hover: rgba(0, 0, 0, 0.4);
+    --border-focus: #000000;
+    --primary: #18181b;
+    --primary-hover: #000000;
+    --primary-glow: rgba(0, 0, 0, 0.15);
+    --secondary: #52525b;
+    --secondary-glow: rgba(82, 82, 91, 0.1);
+    --accent-grad: linear-gradient(135deg, #18181b 0%, #52525b 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(24, 24, 27, 0.08) 0%, rgba(82, 82, 91, 0.05) 100%);
+    --text-high: #09090b;
+    --text-mid: #27272a;
+    --text-low: #52525b;
+    --text-dim: #a1a1aa;
+}
+
+/* 22. Cloud Silver */
+[data-theme="cloud-silver"] {
+    --bg-base: #f1f5f9;
+    --bg-surface: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.9);
+    --bg-card-hover: #ffffff;
+    --border-subtle: rgba(0, 0, 0, 0.07);
+    --border-hover: rgba(14, 165, 233, 0.35);
+    --border-focus: #0ea5e9;
+    --primary: #0ea5e9;
+    --primary-hover: #0284c7;
+    --primary-glow: rgba(14, 165, 233, 0.18);
+    --secondary: #64748b;
+    --secondary-glow: rgba(100, 116, 139, 0.1);
+    --accent-grad: linear-gradient(135deg, #0ea5e9 0%, #64748b 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(100, 116, 139, 0.05) 100%);
+    --text-high: #0f172a;
+    --text-mid: #334155;
+    --text-low: #64748b;
+    --text-dim: #94a3b8;
+}
+
+/* 23. Paper Ivory */
+[data-theme="paper-ivory"] {
+    --bg-base: #fbf7ee;
+    --bg-surface: #fffdf9;
+    --bg-card: rgba(255, 253, 249, 0.95);
+    --bg-card-hover: #ffffff;
+    --border-subtle: rgba(120, 80, 40, 0.1);
+    --border-hover: rgba(180, 83, 9, 0.35);
+    --border-focus: #b45309;
+    --primary: #b45309;
+    --primary-hover: #92400e;
+    --primary-glow: rgba(180, 83, 9, 0.15);
+    --secondary: #78350f;
+    --secondary-glow: rgba(120, 53, 15, 0.1);
+    --accent-grad: linear-gradient(135deg, #b45309 0%, #78350f 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(180, 83, 9, 0.08) 0%, rgba(120, 53, 15, 0.05) 100%);
+    --text-high: #291e0a;
+    --text-mid: #543f1b;
+    --text-low: #876935;
+    --text-dim: #bda377;
+}
+
+/* 24. Nordic Birch */
+[data-theme="nordic-birch"] {
+    --bg-base: #f4f6f0;
+    --bg-surface: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.92);
+    --bg-card-hover: #ffffff;
+    --border-subtle: rgba(46, 74, 56, 0.1);
+    --border-hover: rgba(46, 125, 50, 0.35);
+    --border-focus: #2e7d32;
+    --primary: #2e7d32;
+    --primary-hover: #1b5e20;
+    --primary-glow: rgba(46, 125, 50, 0.18);
+    --secondary: #558b2f;
+    --secondary-glow: rgba(85, 139, 47, 0.1);
+    --accent-grad: linear-gradient(135deg, #2e7d32 0%, #558b2f 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(46, 125, 50, 0.08) 0%, rgba(85, 139, 47, 0.05) 100%);
+    --text-high: #1a2e1d;
+    --text-mid: #3d5940;
+    --text-low: #6a8b6e;
+    --text-dim: #9cbca0;
+}
+
+/* 25. Soft Ash */
+[data-theme="soft-ash"] {
+    --bg-base: #f0f2f5;
+    --bg-surface: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.92);
+    --bg-card-hover: #ffffff;
+    --border-subtle: rgba(0, 0, 0, 0.08);
+    --border-hover: rgba(244, 63, 94, 0.35);
+    --border-focus: #f43f5e;
+    --primary: #f43f5e;
+    --primary-hover: #e11d48;
+    --primary-glow: rgba(244, 63, 94, 0.18);
+    --secondary: #475569;
+    --secondary-glow: rgba(71, 85, 105, 0.1);
+    --accent-grad: linear-gradient(135deg, #f43f5e 0%, #475569 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(244, 63, 94, 0.08) 0%, rgba(71, 85, 105, 0.05) 100%);
+    --text-high: #1e293b;
+    --text-mid: #475569;
+    --text-low: #64748b;
+    --text-dim: #94a3b8;
+}
+
+/* 26. Crisp Horizon */
+[data-theme="crisp-horizon"] {
+    --bg-base: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.92);
+    --bg-card-hover: #ffffff;
+    --border-subtle: rgba(14, 116, 144, 0.1);
+    --border-hover: rgba(14, 116, 144, 0.35);
+    --border-focus: #0e7490;
+    --primary: #0e7490;
+    --primary-hover: #155e75;
+    --primary-glow: rgba(14, 116, 144, 0.18);
+    --secondary: #0284c7;
+    --secondary-glow: rgba(2, 132, 199, 0.1);
+    --accent-grad: linear-gradient(135deg, #0e7490 0%, #0284c7 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(14, 116, 144, 0.08) 0%, rgba(2, 132, 199, 0.05) 100%);
+    --text-high: #082f49;
+    --text-mid: #164e63;
+    --text-low: #3b82f6;
+    --text-dim: #93c5fd;
+}
+
+/* --- GROUP 4: NATURE & WARM EARTH (6) --- */
+
+/* 27. Emerald Forest */
+[data-theme="emerald-forest"] {
+    --bg-base: #05140b;
+    --bg-surface: #0a2414;
+    --bg-card: rgba(12, 44, 25, 0.85);
+    --bg-card-hover: rgba(18, 64, 37, 0.95);
+    --border-subtle: rgba(16, 185, 129, 0.18);
+    --border-hover: rgba(16, 185, 129, 0.45);
+    --border-focus: #10b981;
+    --primary: #10b981;
+    --primary-hover: #059669;
+    --primary-glow: rgba(16, 185, 129, 0.3);
+    --secondary: #34d399;
+    --secondary-glow: rgba(52, 211, 153, 0.2);
+    --accent-grad: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(52, 211, 153, 0.1) 100%);
+    --text-high: #ecfdf5;
+    --text-mid: #a7f3d0;
+    --text-low: #6ee7b7;
+    --text-dim: #047857;
+}
+
+/* 28. Gruvbox Warm Earth */
+[data-theme="gruvbox-earth"] {
+    --bg-base: #1d2021;
+    --bg-surface: #282828;
+    --bg-card: rgba(40, 40, 40, 0.88);
+    --bg-card-hover: rgba(50, 48, 47, 0.95);
+    --border-subtle: rgba(251, 73, 52, 0.15);
+    --border-hover: rgba(250, 189, 47, 0.4);
+    --border-focus: #fabd2f;
+    --primary: #fe8019;
+    --primary-hover: #d65d0e;
+    --primary-glow: rgba(254, 128, 25, 0.25);
+    --secondary: #fabd2f;
+    --secondary-glow: rgba(250, 189, 47, 0.2);
+    --accent-grad: linear-gradient(135deg, #fe8019 0%, #fabd2f 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(254, 128, 25, 0.15) 0%, rgba(250, 189, 47, 0.1) 100%);
+    --text-high: #fbf1c7;
+    --text-mid: #ebdbb2;
+    --text-low: #d5c4a1;
+    --text-dim: #928374;
+}
+
+/* 29. Espresso Mocha */
+[data-theme="espresso-mocha"] {
+    --bg-base: #18110b;
+    --bg-surface: #241a12;
+    --bg-card: rgba(43, 31, 22, 0.88);
+    --bg-card-hover: rgba(61, 44, 31, 0.95);
+    --border-subtle: rgba(217, 119, 6, 0.15);
+    --border-hover: rgba(245, 158, 11, 0.4);
+    --border-focus: #f59e0b;
+    --primary: #d97706;
+    --primary-hover: #b45309;
+    --primary-glow: rgba(217, 119, 6, 0.25);
+    --secondary: #fbbf24;
+    --secondary-glow: rgba(251, 191, 36, 0.2);
+    --accent-grad: linear-gradient(135deg, #d97706 0%, #fbbf24 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(217, 119, 6, 0.15) 0%, rgba(251, 191, 36, 0.1) 100%);
+    --text-high: #fef3c7;
+    --text-mid: #fde68a;
+    --text-low: #fcd34d;
+    --text-dim: #92400e;
+}
+
+/* 30. Bamboo Sage */
+[data-theme="bamboo-sage"] {
+    --bg-base: #111a14;
+    --bg-surface: #18261e;
+    --bg-card: rgba(27, 43, 34, 0.85);
+    --bg-card-hover: rgba(38, 59, 47, 0.95);
+    --border-subtle: rgba(132, 204, 22, 0.15);
+    --border-hover: rgba(132, 204, 22, 0.4);
+    --border-focus: #84cc16;
+    --primary: #84cc16;
+    --primary-hover: #65a30d;
+    --primary-glow: rgba(132, 204, 22, 0.25);
+    --secondary: #a3e635;
+    --secondary-glow: rgba(163, 230, 53, 0.2);
+    --accent-grad: linear-gradient(135deg, #84cc16 0%, #a3e635 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(132, 204, 22, 0.15) 0%, rgba(163, 230, 53, 0.1) 100%);
+    --text-high: #f7fee7;
+    --text-mid: #d9f99d;
+    --text-low: #bef264;
+    --text-dim: #4d7c0f;
+}
+
+/* 31. Autumn Amber */
+[data-theme="autumn-amber"] {
+    --bg-base: #1c0e09;
+    --bg-surface: #2b170f;
+    --bg-card: rgba(48, 26, 17, 0.88);
+    --bg-card-hover: rgba(69, 37, 24, 0.95);
+    --border-subtle: rgba(234, 88, 12, 0.18);
+    --border-hover: rgba(249, 115, 22, 0.45);
+    --border-focus: #f97316;
+    --primary: #ea580c;
+    --primary-hover: #c2410c;
+    --primary-glow: rgba(234, 88, 12, 0.3);
+    --secondary: #f59e0b;
+    --secondary-glow: rgba(245, 158, 11, 0.2);
+    --accent-grad: linear-gradient(135deg, #ea580c 0%, #f59e0b 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(234, 88, 12, 0.15) 0%, rgba(245, 158, 11, 0.1) 100%);
+    --text-high: #ffedd5;
+    --text-mid: #fed7aa;
+    --text-low: #fb923c;
+    --text-dim: #9a3412;
+}
+
+/* 32. Desert Dune */
+[data-theme="desert-dune"] {
+    --bg-base: #17120c;
+    --bg-surface: #261e14;
+    --bg-card: rgba(46, 36, 25, 0.85);
+    --bg-card-hover: rgba(64, 50, 35, 0.95);
+    --border-subtle: rgba(217, 119, 6, 0.18);
+    --border-hover: rgba(251, 191, 36, 0.4);
+    --border-focus: #fbbf24;
+    --primary: #f59e0b;
+    --primary-hover: #d97706;
+    --primary-glow: rgba(245, 158, 11, 0.25);
+    --secondary: #fbbf24;
+    --secondary-glow: rgba(251, 191, 36, 0.2);
+    --accent-grad: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(251, 191, 36, 0.1) 100%);
+    --text-high: #fffbeb;
+    --text-mid: #fef3c7;
+    --text-low: #fde68a;
+    --text-dim: #78350f;
+}
+
+/* --- GROUP 5: VIBRANT & GRADIENT AESTHETICS (8) --- */
+
+/* 33. RosÃ© Pine */
+[data-theme="rose-pine"] {
+    --bg-base: #191724;
+    --bg-surface: #1f1d2e;
+    --bg-card: rgba(38, 35, 58, 0.85);
+    --bg-card-hover: rgba(50, 46, 77, 0.95);
+    --border-subtle: rgba(235, 111, 146, 0.18);
+    --border-hover: rgba(235, 111, 146, 0.45);
+    --border-focus: #eb6f92;
+    --primary: #eb6f92;
+    --primary-hover: #d9577c;
+    --primary-glow: rgba(235, 111, 146, 0.3);
+    --secondary: #9ccfd8;
+    --secondary-glow: rgba(156, 207, 216, 0.25);
+    --accent-grad: linear-gradient(135deg, #eb6f92 0%, #9ccfd8 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(235, 111, 146, 0.18) 0%, rgba(156, 207, 216, 0.1) 100%);
+    --text-high: #e0def4;
+    --text-mid: #908caa;
+    --text-low: #6e6a86;
+    --text-dim: #524f67;
+}
+
+/* 34. Royal Velvet */
+[data-theme="royal-velvet"] {
+    --bg-base: #140728;
+    --bg-surface: #220c42;
+    --bg-card: rgba(43, 16, 82, 0.85);
+    --bg-card-hover: rgba(59, 22, 112, 0.95);
+    --border-subtle: rgba(217, 70, 239, 0.2);
+    --border-hover: rgba(250, 204, 21, 0.45);
+    --border-focus: #facc15;
+    --primary: #d946ef;
+    --primary-hover: #c026d3;
+    --primary-glow: rgba(217, 70, 239, 0.3);
+    --secondary: #facc15;
+    --secondary-glow: rgba(250, 204, 21, 0.25);
+    --accent-grad: linear-gradient(135deg, #d946ef 0%, #facc15 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(217, 70, 239, 0.2) 0%, rgba(250, 204, 21, 0.1) 100%);
+    --text-high: #fdf4ff;
+    --text-mid: #f5d0fe;
+    --text-low: #e879f9;
+    --text-dim: #701a75;
+}
+
+/* 35. Aurora Borealis */
+[data-theme="aurora-borealis"] {
+    --bg-base: #06101e;
+    --bg-surface: #0b1e38;
+    --bg-card: rgba(14, 38, 71, 0.85);
+    --bg-card-hover: rgba(19, 52, 97, 0.95);
+    --border-subtle: rgba(45, 212, 191, 0.2);
+    --border-hover: rgba(167, 139, 250, 0.45);
+    --border-focus: #2dd4bf;
+    --primary: #2dd4bf;
+    --primary-hover: #14b8a6;
+    --primary-glow: rgba(45, 212, 191, 0.3);
+    --secondary: #a78bfa;
+    --secondary-glow: rgba(167, 139, 250, 0.25);
+    --accent-grad: linear-gradient(135deg, #2dd4bf 0%, #a78bfa 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(45, 212, 191, 0.2) 0%, rgba(167, 139, 250, 0.1) 100%);
+    --text-high: #f0fdfa;
+    --text-mid: #ccfbf1;
+    --text-low: #5eead4;
+    --text-dim: #134e4a;
+}
+
+/* 36. Sunset Horizon */
+[data-theme="sunset-horizon"] {
+    --bg-base: #17081d;
+    --bg-surface: #270f30;
+    --bg-card: rgba(51, 20, 64, 0.85);
+    --bg-card-hover: rgba(71, 28, 89, 0.95);
+    --border-subtle: rgba(244, 63, 94, 0.2);
+    --border-hover: rgba(251, 146, 60, 0.45);
+    --border-focus: #fb923c;
+    --primary: #f43f5e;
+    --primary-hover: #e11d48;
+    --primary-glow: rgba(244, 63, 94, 0.3);
+    --secondary: #fb923c;
+    --secondary-glow: rgba(251, 146, 60, 0.25);
+    --accent-grad: linear-gradient(135deg, #f43f5e 0%, #fb923c 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(244, 63, 94, 0.2) 0%, rgba(251, 146, 60, 0.1) 100%);
+    --text-high: #fff1f2;
+    --text-mid: #ffe4e6;
+    --text-low: #fda4af;
+    --text-dim: #881337;
+}
+
+/* 37. Cosmic Fuchsia */
+[data-theme="cosmic-fuchsia"] {
+    --bg-base: #18031d;
+    --bg-surface: #280730;
+    --bg-card: rgba(53, 10, 64, 0.85);
+    --bg-card-hover: rgba(74, 14, 89, 0.95);
+    --border-subtle: rgba(236, 72, 153, 0.2);
+    --border-hover: rgba(217, 70, 239, 0.45);
+    --border-focus: #ec4899;
+    --primary: #ec4899;
+    --primary-hover: #db2777;
+    --primary-glow: rgba(236, 72, 153, 0.3);
+    --secondary: #c084fc;
+    --secondary-glow: rgba(192, 132, 252, 0.25);
+    --accent-grad: linear-gradient(135deg, #ec4899 0%, #c084fc 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(192, 132, 252, 0.1) 100%);
+    --text-high: #fdf2f8;
+    --text-mid: #fce7f3;
+    --text-low: #f472b6;
+    --text-dim: #831843;
+}
+
+/* 38. Solar Flare */
+[data-theme="solar-flare"] {
+    --bg-base: #180900;
+    --bg-surface: #2b1100;
+    --bg-card: rgba(54, 22, 0, 0.85);
+    --bg-card-hover: rgba(77, 31, 0, 0.95);
+    --border-subtle: rgba(245, 158, 11, 0.2);
+    --border-hover: rgba(239, 68, 68, 0.45);
+    --border-focus: #f59e0b;
+    --primary: #f59e0b;
+    --primary-hover: #d97706;
+    --primary-glow: rgba(245, 158, 11, 0.3);
+    --secondary: #ef4444;
+    --secondary-glow: rgba(239, 68, 68, 0.25);
+    --accent-grad: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);
+    --text-high: #fffbeb;
+    --text-mid: #fef3c7;
+    --text-low: #fde68a;
+    --text-dim: #78350f;
+}
+
+/* 39. Electric Mint */
+[data-theme="electric-mint"] {
+    --bg-base: #011411;
+    --bg-surface: #03211c;
+    --bg-card: rgba(5, 43, 37, 0.85);
+    --bg-card-hover: rgba(8, 61, 52, 0.95);
+    --border-subtle: rgba(52, 211, 153, 0.2);
+    --border-hover: rgba(45, 212, 191, 0.45);
+    --border-focus: #34d399;
+    --primary: #34d399;
+    --primary-hover: #10b981;
+    --primary-glow: rgba(52, 211, 153, 0.3);
+    --secondary: #2dd4bf;
+    --secondary-glow: rgba(45, 212, 191, 0.25);
+    --accent-grad: linear-gradient(135deg, #34d399 0%, #2dd4bf 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(52, 211, 153, 0.2) 0%, rgba(45, 212, 191, 0.1) 100%);
+    --text-high: #ecfdf5;
+    --text-mid: #a7f3d0;
+    --text-low: #6ee7b7;
+    --text-dim: #065f46;
+}
+
+/* 40. Vaporwave 80s */
+[data-theme="vaporwave-80s"] {
+    --bg-base: #170d2b;
+    --bg-surface: #241442;
+    --bg-card: rgba(46, 26, 84, 0.85);
+    --bg-card-hover: rgba(63, 36, 115, 0.95);
+    --border-subtle: rgba(255, 113, 206, 0.2);
+    --border-hover: rgba(1, 205, 254, 0.5);
+    --border-focus: #ff71ce;
+    --primary: #ff71ce;
+    --primary-hover: #eb4fb5;
+    --primary-glow: rgba(255, 113, 206, 0.35);
+    --secondary: #01cdfe;
+    --secondary-glow: rgba(1, 205, 254, 0.35);
+    --accent-grad: linear-gradient(135deg, #ff71ce 0%, #01cdfe 100%);
+    --accent-grad-subtle: linear-gradient(135deg, rgba(255, 113, 206, 0.2) 0%, rgba(1, 205, 254, 0.15) 100%);
+    --text-high: #fffb96;
+    --text-mid: #b967ff;
+    --text-low: #05ffa1;
+    --text-dim: #71428c;
+}

@@ -20,6 +20,7 @@
 
     <!-- Premium Custom Stylesheet -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/templates.css">
 </head>
 <body>
 
@@ -49,6 +50,9 @@
                 </button>
                 <button class="btn btn-secondary btn-sm" id="openAddProjectModalBtn" title="Create a new project">
                     <i class="fa-solid fa-folder-plus"></i> <span class="d-none-sm">Add Project</span>
+                </button>
+                <button class="btn btn-secondary btn-sm" id="openTemplateModalBtn" title="Choose from 40 developer templates and themes">
+                    <i class="fa-solid fa-palette"></i> <span class="d-none-sm">Themes (40)</span>
                 </button>
                 <button class="btn btn-primary btn-sm" id="openAiChatBtn" title="Talk to AI Tour Guide" style="background: linear-gradient(135deg, #6366f1, #06b6d4); border: none;">
                     <i class="fa-solid fa-sparkles"></i> <span class="d-none-sm">AI Tour Guide</span>
@@ -817,6 +821,49 @@
                         <i class="fa-solid fa-cloud-arrow-up"></i> Save Skill to Backend
                     </button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- TEMPLATE / THEME GALLERY MODAL (40 STYLES) -->
+    <!-- ========================================================= -->
+    <div class="modal-overlay" id="templateGalleryModal">
+        <div class="modal-card template-modal-card">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fa-solid fa-palette" style="color: var(--primary);"></i>
+                    <span>Template Gallery (40 Developer Themes)</span>
+                </div>
+                <button class="modal-close" id="closeTemplateModal" aria-label="Close modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="template-gallery-subtitle">
+                    Choose from 40 curated aesthetics designed for software engineers. Instant live preview with persistent selection.
+                </p>
+
+                <div class="template-controls-bar">
+                    <div class="template-search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="templateSearchInput" placeholder="Search 40 templates (e.g. Cyberpunk, Nordic, Dracula, Emerald)...">
+                    </div>
+                    <div class="template-count-badge" id="templateCountBadge">40 Themes</div>
+                </div>
+
+                <div class="template-filter-tabs" id="templateFilterTabs">
+                    <button class="tpl-filter-btn active" data-category="all">All (40)</button>
+                    <button class="tpl-filter-btn" data-category="dark">Modern Dark (8)</button>
+                    <button class="tpl-filter-btn" data-category="cyber">Cyber &amp; Retro (8)</button>
+                    <button class="tpl-filter-btn" data-category="light">Minimalist Light (8)</button>
+                    <button class="tpl-filter-btn" data-category="earth">Nature &amp; Earth (8)</button>
+                    <button class="tpl-filter-btn" data-category="vibrant">Vibrant &amp; Neon (8)</button>
+                </div>
+
+                <div class="template-grid" id="templatesGrid">
+                    <!-- Dynamic rendering by app.js -->
+                </div>
             </div>
         </div>
     </div>
