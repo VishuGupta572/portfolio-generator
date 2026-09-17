@@ -1473,334 +1473,525 @@ async function handleClearAiHistory() {
 // =========================================================
 
 const PORTFOLIO_TEMPLATES = [
-    // --- 1. MODERN DARK (8) ---
     {
-        id: 'obsidian-pro',
-        name: 'Obsidian Pro',
-        category: 'dark',
-        categoryLabel: 'Modern Dark',
-        desc: 'Sleek ultra-dark background with vibrant indigo & cyan accents.',
-        swatches: ['#090d16', '#0f172a', '#6366f1', '#06b6d4']
+        "id": "obsidian-pro",
+        "name": "Obsidian Pro",
+        "category": "dark",
+        "categoryLabel": "Modern Dark",
+        "desc": "Modern dark palette featuring #6366f1 highlights.",
+        "swatches": [
+            "#080b11",
+            "#0e1420",
+            "#6366f1",
+            "#06b6d4"
+        ]
     },
     {
-        id: 'nordic-frost',
-        name: 'Nordic Frost',
-        category: 'dark',
-        categoryLabel: 'Modern Dark',
-        desc: 'Cool Scandinavian blue-grey tones with icy blue highlights.',
-        swatches: ['#0f172a', '#1e293b', '#38bdf8', '#818cf8']
+        "id": "tokyo-night",
+        "name": "Tokyo Night",
+        "category": "dark",
+        "categoryLabel": "Modern Dark",
+        "desc": "Modern dark palette featuring #7aa2f7 highlights.",
+        "swatches": [
+            "#1a1b26",
+            "#24283b",
+            "#7aa2f7",
+            "#bb9af7"
+        ]
     },
     {
-        id: 'midnight-amethyst',
-        name: 'Midnight Amethyst',
-        category: 'dark',
-        categoryLabel: 'Modern Dark',
-        desc: 'Deep purple nocturnal atmosphere with glowing violet glows.',
-        swatches: ['#0f0728', '#1b0e3f', '#a855f7', '#ec4899']
+        "id": "dracula-midnight",
+        "name": "Dracula Midnight",
+        "category": "dark",
+        "categoryLabel": "Modern Dark",
+        "desc": "Modern dark palette featuring #bd93f9 highlights.",
+        "swatches": [
+            "#1e1f29",
+            "#282a36",
+            "#bd93f9",
+            "#ff79c6"
+        ]
     },
     {
-        id: 'slate-minimal',
-        name: 'Slate Minimal',
-        category: 'dark',
-        categoryLabel: 'Modern Dark',
-        desc: 'Pure matte neutral dark grey with clean sky blue accents.',
-        swatches: ['#121417', '#1c2024', '#0284c7', '#38bdf8']
+        "id": "one-dark-pro",
+        "name": "One Dark Pro",
+        "category": "dark",
+        "categoryLabel": "Modern Dark",
+        "desc": "Modern dark palette featuring #61afef highlights.",
+        "swatches": [
+            "#21252b",
+            "#282c34",
+            "#61afef",
+            "#98c379"
+        ]
     },
     {
-        id: 'emerald-matrix',
-        name: 'Emerald Matrix',
-        category: 'dark',
-        categoryLabel: 'Modern Dark',
-        desc: 'Deep forest green darkness with radiant emerald accents.',
-        swatches: ['#051b14', '#0d281e', '#10b981', '#34d399']
+        "id": "nord-frost",
+        "name": "Nord Frost",
+        "category": "dark",
+        "categoryLabel": "Modern Dark",
+        "desc": "Modern dark palette featuring #88c0d0 highlights.",
+        "swatches": [
+            "#242933",
+            "#2e3440",
+            "#88c0d0",
+            "#8fbcbb"
+        ]
     },
     {
-        id: 'crimson-void',
-        name: 'Crimson Void',
-        category: 'dark',
-        categoryLabel: 'Modern Dark',
-        desc: 'Dark obsidian background punctuated with fiery ruby red.',
-        swatches: ['#14070a', '#240f15', '#f43f5e', '#fb7185']
+        "id": "deep-space",
+        "name": "Deep Space Nebula",
+        "category": "dark",
+        "categoryLabel": "Modern Dark",
+        "desc": "Modern dark palette featuring #8b5cf6 highlights.",
+        "swatches": [
+            "#060913",
+            "#0c1222",
+            "#8b5cf6",
+            "#38bdf8"
+        ]
     },
     {
-        id: 'aurora-borealis',
-        name: 'Aurora Borealis',
-        category: 'dark',
-        categoryLabel: 'Modern Dark',
-        desc: 'Arctic sky darkness inspired by green and teal northern lights.',
-        swatches: ['#07191d', '#0e2b32', '#14b8a6', '#2dd4bf']
+        "id": "moonlight-slate",
+        "name": "Moonlight Slate",
+        "category": "dark",
+        "categoryLabel": "Modern Dark",
+        "desc": "Modern dark palette featuring #38bdf8 highlights.",
+        "swatches": [
+            "#11141a",
+            "#181d26",
+            "#38bdf8",
+            "#94a3b8"
+        ]
     },
     {
-        id: 'carbon-stealth',
-        name: 'Carbon Stealth',
-        category: 'dark',
-        categoryLabel: 'Modern Dark',
-        desc: 'Monochromatic titanium dark grey with sharp silver accents.',
-        swatches: ['#0d0f12', '#171a1f', '#94a3b8', '#cbd5e1']
-    },
-
-    // --- 2. CYBERPUNK & RETRO TECH (8) ---
-    {
-        id: 'cyberpunk-2077',
-        name: 'Cyberpunk 2077',
-        category: 'cyber',
-        categoryLabel: 'Cyber & Retro',
-        desc: 'High contrast high-tech neon yellow and hot electric cyan.',
-        swatches: ['#0a0814', '#15102a', '#fcee0a', '#00f0ff']
+        "id": "midnight-cobalt",
+        "name": "Midnight Cobalt",
+        "category": "dark",
+        "categoryLabel": "Modern Dark",
+        "desc": "Modern dark palette featuring #0096ff highlights.",
+        "swatches": [
+            "#050d1a",
+            "#0a1931",
+            "#0096ff",
+            "#00e5ff"
+        ]
     },
     {
-        id: 'synthwave-84',
-        name: 'Synthwave \'84',
-        category: 'cyber',
-        categoryLabel: 'Cyber & Retro',
-        desc: 'Nostalgic 1980s neon sunsets, magenta lasers, and teal grids.',
-        swatches: ['#1a0b2e', '#2b1055', '#ff2a85', '#00f0ff']
+        "id": "cyber-charcoal",
+        "name": "Cyber Charcoal",
+        "category": "dark",
+        "categoryLabel": "Modern Dark",
+        "desc": "Modern dark palette featuring #f97316 highlights.",
+        "swatches": [
+            "#121214",
+            "#1a1a1e",
+            "#f97316",
+            "#fb923c"
+        ]
     },
     {
-        id: 'dracula-vampire',
-        name: 'Dracula Official',
-        category: 'cyber',
-        categoryLabel: 'Cyber & Retro',
-        desc: 'The iconic gothic developer theme with purple and pink.',
-        swatches: ['#21222c', '#282a36', '#bd93f9', '#ff79c6']
+        "id": "eclipse-black",
+        "name": "Eclipse Black",
+        "category": "dark",
+        "categoryLabel": "Modern Dark",
+        "desc": "Modern dark palette featuring #e11d48 highlights.",
+        "swatches": [
+            "#000000",
+            "#0a0a0a",
+            "#e11d48",
+            "#f43f5e"
+        ]
     },
     {
-        id: 'monokai-pro',
-        name: 'Monokai Pro',
-        category: 'cyber',
-        categoryLabel: 'Cyber & Retro',
-        desc: 'Sublime Text legend with vibrant lime green, gold, and coral.',
-        swatches: ['#221f22', '#2d2a2e', '#a9dc76', '#ffd866']
+        "id": "cyberpunk-2077",
+        "name": "Cyberpunk 2077",
+        "category": "cyber",
+        "categoryLabel": "Cyber & Retro",
+        "desc": "Retro cyberpunk tech styling with vivid electric contrast.",
+        "swatches": [
+            "#0d0221",
+            "#19053b",
+            "#fcee0a",
+            "#00f0ff"
+        ]
     },
     {
-        id: 'tokyo-night',
-        name: 'Tokyo Night',
-        category: 'cyber',
-        categoryLabel: 'Cyber & Retro',
-        desc: 'Downtown Shibuya nightlife with soft cornflower blues and magenta.',
-        swatches: ['#16161e', '#1a1b26', '#7aa2f7', '#bb9af7']
+        "id": "synthwave-sunset",
+        "name": "Synthwave Sunset",
+        "category": "cyber",
+        "categoryLabel": "Cyber & Retro",
+        "desc": "Retro cyberpunk tech styling with vivid electric contrast.",
+        "swatches": [
+            "#1a0b2e",
+            "#261245",
+            "#ff2a6d",
+            "#05d9e8"
+        ]
     },
     {
-        id: 'retro-terminal',
-        name: 'Amber Terminal',
-        category: 'cyber',
-        categoryLabel: 'Cyber & Retro',
-        desc: 'Vintage amber monochrome CRT monitor terminal look.',
-        swatches: ['#120c02', '#201605', '#f59e0b', '#fbbf24']
+        "id": "matrix-terminal",
+        "name": "Matrix Terminal",
+        "category": "cyber",
+        "categoryLabel": "Cyber & Retro",
+        "desc": "Retro cyberpunk tech styling with vivid electric contrast.",
+        "swatches": [
+            "#030a04",
+            "#061508",
+            "#00ff41",
+            "#008f11"
+        ]
     },
     {
-        id: 'hacker-green',
-        name: 'Phosphor Hacker',
-        category: 'cyber',
-        categoryLabel: 'Cyber & Retro',
-        desc: 'Classic green phosphor CRT terminal for the true hacker aesthetic.',
-        swatches: ['#041208', '#092110', '#22c55e', '#4ade80']
+        "id": "amber-crt",
+        "name": "Amber Vintage Terminal",
+        "category": "cyber",
+        "categoryLabel": "Cyber & Retro",
+        "desc": "Retro cyberpunk tech styling with vivid electric contrast.",
+        "swatches": [
+            "#0d0800",
+            "#1a1002",
+            "#ffb000",
+            "#ff8000"
+        ]
     },
     {
-        id: 'gameboy-classic',
-        name: 'Game Boy DMG',
-        category: 'cyber',
-        categoryLabel: 'Cyber & Retro',
-        desc: 'Iconic 4-color olive-green dot matrix handheld console feel.',
-        swatches: ['#1c2818', '#2d3e26', '#8bac0f', '#9bbc0f']
-    },
-
-    // --- 3. MINIMALIST LIGHT (8) ---
-    {
-        id: 'clean-paper',
-        name: 'Clean Paper',
-        category: 'light',
-        categoryLabel: 'Minimalist Light',
-        desc: 'Editorial ivory white and crisp typography with indigo ink.',
-        swatches: ['#f8fafc', '#ffffff', '#4f46e5', '#0ea5e9']
+        "id": "cyan-circuit",
+        "name": "Cyan Circuit",
+        "category": "cyber",
+        "categoryLabel": "Cyber & Retro",
+        "desc": "Retro cyberpunk tech styling with vivid electric contrast.",
+        "swatches": [
+            "#021217",
+            "#041f26",
+            "#00f5ff",
+            "#00b4d8"
+        ]
     },
     {
-        id: 'arctic-snow',
-        name: 'Arctic Snow',
-        category: 'light',
-        categoryLabel: 'Minimalist Light',
-        desc: 'Crisp glacial white background with cool azure blue details.',
-        swatches: ['#f0f9ff', '#ffffff', '#0284c7', '#06b6d4']
+        "id": "electric-violet",
+        "name": "Electric Violet",
+        "category": "cyber",
+        "categoryLabel": "Cyber & Retro",
+        "desc": "Retro cyberpunk tech styling with vivid electric contrast.",
+        "swatches": [
+            "#130324",
+            "#20073b",
+            "#a855f7",
+            "#d946ef"
+        ]
     },
     {
-        id: 'cream-latte',
-        name: 'Cream Latte',
-        category: 'light',
-        categoryLabel: 'Minimalist Light',
-        desc: 'Warm comforting milk coffee and espresso brown palette.',
-        swatches: ['#faf7f2', '#ffffff', '#b45309', '#d97706']
+        "id": "hyperdrive-laser",
+        "name": "Hyperdrive Laser",
+        "category": "cyber",
+        "categoryLabel": "Cyber & Retro",
+        "desc": "Retro cyberpunk tech styling with vivid electric contrast.",
+        "swatches": [
+            "#140505",
+            "#240a0a",
+            "#ef4444",
+            "#f97316"
+        ]
     },
     {
-        id: 'rose-blush',
-        name: 'RosÃ© Blush',
-        category: 'light',
-        categoryLabel: 'Minimalist Light',
-        desc: 'Soft pastel pink aesthetic with elegant raspberry accents.',
-        swatches: ['#fff1f2', '#ffffff', '#e11d48', '#f43f5e']
+        "id": "quantum-plasma",
+        "name": "Quantum Plasma",
+        "category": "cyber",
+        "categoryLabel": "Cyber & Retro",
+        "desc": "Retro cyberpunk tech styling with vivid electric contrast.",
+        "swatches": [
+            "#030814",
+            "#07122b",
+            "#22c55e",
+            "#06b6d4"
+        ]
     },
     {
-        id: 'github-canvas',
-        name: 'GitHub Light',
-        category: 'light',
-        categoryLabel: 'Minimalist Light',
-        desc: 'Signature GitHub developer light mode with royal blue.',
-        swatches: ['#f6f8fa', '#ffffff', '#0969da', '#1f883d']
+        "id": "swiss-minimal",
+        "name": "Swiss Minimal White",
+        "category": "light",
+        "categoryLabel": "Minimalist Light",
+        "desc": "Clean minimalist light mode designed for crisp readability.",
+        "swatches": [
+            "#f8f9fa",
+            "#ffffff",
+            "#e11d48",
+            "#0f172a"
+        ]
     },
     {
-        id: 'lavender-mist',
-        name: 'Lavender Mist',
-        category: 'light',
-        categoryLabel: 'Minimalist Light',
-        desc: 'Delicate floral lavender haze with rich royal violet elements.',
-        swatches: ['#faf5ff', '#ffffff', '#9333ea', '#a855f7']
+        "id": "cupertino-clean",
+        "name": "Cupertino Clean",
+        "category": "light",
+        "categoryLabel": "Minimalist Light",
+        "desc": "Clean minimalist light mode designed for crisp readability.",
+        "swatches": [
+            "#f5f5f7",
+            "#ffffff",
+            "#0071e3",
+            "#2c2c2e"
+        ]
     },
     {
-        id: 'peach-sorbet',
-        name: 'Peach Sorbet',
-        category: 'light',
-        categoryLabel: 'Minimalist Light',
-        desc: 'Sunlit warm peach and orange tones for an inviting creative vibe.',
-        swatches: ['#fff7ed', '#ffffff', '#ea580c', '#f97316']
+        "id": "monochrome-exec",
+        "name": "Monochrome Executive",
+        "category": "light",
+        "categoryLabel": "Minimalist Light",
+        "desc": "Clean minimalist light mode designed for crisp readability.",
+        "swatches": [
+            "#ffffff",
+            "#f4f4f5",
+            "#18181b",
+            "#52525b"
+        ]
     },
     {
-        id: 'solarized-light',
-        name: 'Solarized Light',
-        category: 'light',
-        categoryLabel: 'Minimalist Light',
-        desc: 'Precision scientific solarized palette engineered by Ethan Schoonover.',
-        swatches: ['#fdf6e3', '#eee8d5', '#268bd2', '#2aa198']
-    },
-
-    // --- 4. NATURE & EARTH (8) ---
-    {
-        id: 'forest-moss',
-        name: 'Forest Moss',
-        category: 'earth',
-        categoryLabel: 'Nature & Earth',
-        desc: 'Calming pine needle green with warm sunlight amber rays.',
-        swatches: ['#0d1912', '#162b20', '#10b981', '#f59e0b']
+        "id": "cloud-silver",
+        "name": "Cloud Silver",
+        "category": "light",
+        "categoryLabel": "Minimalist Light",
+        "desc": "Clean minimalist light mode designed for crisp readability.",
+        "swatches": [
+            "#f1f5f9",
+            "#ffffff",
+            "#0ea5e9",
+            "#64748b"
+        ]
     },
     {
-        id: 'sahara-dune',
-        name: 'Sahara Dune',
-        category: 'earth',
-        categoryLabel: 'Nature & Earth',
-        desc: 'Warm desert dunes and golden sand with sunlit terracotta.',
-        swatches: ['#1a140d', '#2c2217', '#d97706', '#f59e0b']
+        "id": "paper-ivory",
+        "name": "Paper Ivory",
+        "category": "light",
+        "categoryLabel": "Minimalist Light",
+        "desc": "Clean minimalist light mode designed for crisp readability.",
+        "swatches": [
+            "#fbf7ee",
+            "#fffdf9",
+            "#b45309",
+            "#78350f"
+        ]
     },
     {
-        id: 'deep-ocean',
-        name: 'Deep Ocean',
-        category: 'earth',
-        categoryLabel: 'Nature & Earth',
-        desc: 'Abyssal oceanic dark blues with bioluminescent turquoise.',
-        swatches: ['#071426', '#0f243d', '#0284c7', '#06b6d4']
+        "id": "nordic-birch",
+        "name": "Nordic Birch",
+        "category": "light",
+        "categoryLabel": "Minimalist Light",
+        "desc": "Clean minimalist light mode designed for crisp readability.",
+        "swatches": [
+            "#f4f6f0",
+            "#ffffff",
+            "#2e7d32",
+            "#558b2f"
+        ]
     },
     {
-        id: 'autumn-maple',
-        name: 'Autumn Maple',
-        category: 'earth',
-        categoryLabel: 'Nature & Earth',
-        desc: 'Fallen October red maple leaves with golden amber reflections.',
-        swatches: ['#1c0c08', '#2e1610', '#ea580c', '#e11d48']
+        "id": "soft-ash",
+        "name": "Soft Ash",
+        "category": "light",
+        "categoryLabel": "Minimalist Light",
+        "desc": "Clean minimalist light mode designed for crisp readability.",
+        "swatches": [
+            "#f0f2f5",
+            "#ffffff",
+            "#f43f5e",
+            "#475569"
+        ]
     },
     {
-        id: 'desert-sage',
-        name: 'Desert Sage',
-        category: 'earth',
-        categoryLabel: 'Nature & Earth',
-        desc: 'Earthy botanical sage grey-green with warm gold accents.',
-        swatches: ['#131a16', '#1e2b24', '#84cc16', '#a3e635']
+        "id": "crisp-horizon",
+        "name": "Crisp Horizon",
+        "category": "light",
+        "categoryLabel": "Minimalist Light",
+        "desc": "Clean minimalist light mode designed for crisp readability.",
+        "swatches": [
+            "#f8fafc",
+            "#ffffff",
+            "#0e7490",
+            "#0284c7"
+        ]
     },
     {
-        id: 'volcanic-magma',
-        name: 'Volcanic Magma',
-        category: 'earth',
-        categoryLabel: 'Nature & Earth',
-        desc: 'Dark basalt obsidian rock flowing with glowing orange lava.',
-        swatches: ['#180a06', '#2b120c', '#f97316', '#ef4444']
+        "id": "emerald-forest",
+        "name": "Emerald Forest",
+        "category": "earth",
+        "categoryLabel": "Nature & Earth",
+        "desc": "Organic, warm earth & botanical tones inspired by nature.",
+        "swatches": [
+            "#05140b",
+            "#0a2414",
+            "#10b981",
+            "#34d399"
+        ]
     },
     {
-        id: 'copper-canyon',
-        name: 'Copper Canyon',
-        category: 'earth',
-        categoryLabel: 'Nature & Earth',
-        desc: 'Southwestern red rock canyon with burnished bronze & copper.',
-        swatches: ['#1c100a', '#2d1c13', '#c2410c', '#fb923c']
+        "id": "gruvbox-earth",
+        "name": "Gruvbox Warm Earth",
+        "category": "earth",
+        "categoryLabel": "Nature & Earth",
+        "desc": "Organic, warm earth & botanical tones inspired by nature.",
+        "swatches": [
+            "#1d2021",
+            "#282828",
+            "#fe8019",
+            "#fabd2f"
+        ]
     },
     {
-        id: 'terracotta-sun',
-        name: 'Terracotta Sun',
-        category: 'earth',
-        categoryLabel: 'Nature & Earth',
-        desc: 'Mediterranean clay pottery baked under vibrant sunset light.',
-        swatches: ['#1a0f12', '#2c181c', '#e11d48', '#f97316']
-    },
-
-    // --- 5. VIBRANT & NEON (8) ---
-    {
-        id: 'hyper-violet',
-        name: 'Hyper Violet',
-        category: 'vibrant',
-        categoryLabel: 'Vibrant & Neon',
-        desc: 'Supercharged electric ultraviolet with vivid fuchsia energy.',
-        swatches: ['#0c061a', '#170c31', '#9333ea', '#c084fc']
+        "id": "espresso-mocha",
+        "name": "Espresso Mocha",
+        "category": "earth",
+        "categoryLabel": "Nature & Earth",
+        "desc": "Organic, warm earth & botanical tones inspired by nature.",
+        "swatches": [
+            "#18110b",
+            "#241a12",
+            "#d97706",
+            "#fbbf24"
+        ]
     },
     {
-        id: 'electric-indigo',
-        name: 'Electric Indigo',
-        category: 'vibrant',
-        categoryLabel: 'Vibrant & Neon',
-        desc: 'Intense high-voltage indigo paired with hyper-cyan beams.',
-        swatches: ['#080a1c', '#101533', '#4f46e5', '#38bdf8']
+        "id": "bamboo-sage",
+        "name": "Bamboo Sage",
+        "category": "earth",
+        "categoryLabel": "Nature & Earth",
+        "desc": "Organic, warm earth & botanical tones inspired by nature.",
+        "swatches": [
+            "#111a14",
+            "#18261e",
+            "#84cc16",
+            "#a3e635"
+        ]
     },
     {
-        id: 'cosmic-sunset',
-        name: 'Cosmic Sunset',
-        category: 'vibrant',
-        categoryLabel: 'Vibrant & Neon',
-        desc: 'Galactic twilight blending radiant violet and sunset orange.',
-        swatches: ['#12081c', '#200e31', '#d946ef', '#f97316']
+        "id": "autumn-amber",
+        "name": "Autumn Amber",
+        "category": "earth",
+        "categoryLabel": "Nature & Earth",
+        "desc": "Organic, warm earth & botanical tones inspired by nature.",
+        "swatches": [
+            "#1c0e09",
+            "#2b170f",
+            "#ea580c",
+            "#f59e0b"
+        ]
     },
     {
-        id: 'supercharged-cyan',
-        name: 'Supercharged Cyan',
-        category: 'vibrant',
-        categoryLabel: 'Vibrant & Neon',
-        desc: 'Laser aqua glow against deep underwater midnight black.',
-        swatches: ['#04141a', '#082530', '#06b6d4', '#22d3ee']
+        "id": "desert-dune",
+        "name": "Desert Dune",
+        "category": "earth",
+        "categoryLabel": "Nature & Earth",
+        "desc": "Organic, warm earth & botanical tones inspired by nature.",
+        "swatches": [
+            "#17120c",
+            "#261e14",
+            "#f59e0b",
+            "#fbbf24"
+        ]
     },
     {
-        id: 'neon-lime',
-        name: 'Neon Lime',
-        category: 'vibrant',
-        categoryLabel: 'Vibrant & Neon',
-        desc: 'Kinetic cyber lime green popping against pure carbon night.',
-        swatches: ['#091204', '#122409', '#84cc16', '#a3e635']
+        "id": "rose-pine",
+        "name": "Ros\u00c3\u00a9 Pine",
+        "category": "earth",
+        "categoryLabel": "Nature & Earth",
+        "desc": "Organic, warm earth & botanical tones inspired by nature.",
+        "swatches": [
+            "#191724",
+            "#1f1d2e",
+            "#eb6f92",
+            "#9ccfd8"
+        ]
     },
     {
-        id: 'magenta-fury',
-        name: 'Magenta Fury',
-        category: 'vibrant',
-        categoryLabel: 'Vibrant & Neon',
-        desc: 'Bold neon hot magenta paired with blazing purple lightning.',
-        swatches: ['#190412', '#2d0821', '#ec4899', '#f43f5e']
+        "id": "royal-velvet",
+        "name": "Royal Velvet",
+        "category": "vibrant",
+        "categoryLabel": "Vibrant & Neon",
+        "desc": "High-energy glowing gradients and hyper-saturated accents.",
+        "swatches": [
+            "#140728",
+            "#220c42",
+            "#d946ef",
+            "#facc15"
+        ]
     },
     {
-        id: 'quantum-realm',
-        name: 'Quantum Realm',
-        category: 'vibrant',
-        categoryLabel: 'Vibrant & Neon',
-        desc: 'Subatomic particle glow with electric teal and neon violet.',
-        swatches: ['#070d1d', '#0e1a38', '#6366f1', '#14b8a6']
+        "id": "aurora-borealis",
+        "name": "Aurora Borealis",
+        "category": "vibrant",
+        "categoryLabel": "Vibrant & Neon",
+        "desc": "High-energy glowing gradients and hyper-saturated accents.",
+        "swatches": [
+            "#06101e",
+            "#0b1e38",
+            "#2dd4bf",
+            "#a78bfa"
+        ]
     },
     {
-        id: 'solar-flare',
-        name: 'Solar Flare',
-        category: 'vibrant',
-        categoryLabel: 'Vibrant & Neon',
-        desc: 'Nuclear solar corona with molten gold and blazing crimson fire.',
-        swatches: ['#180a02', '#2d1405', '#f59e0b', '#ef4444']
+        "id": "sunset-horizon",
+        "name": "Sunset Horizon",
+        "category": "vibrant",
+        "categoryLabel": "Vibrant & Neon",
+        "desc": "High-energy glowing gradients and hyper-saturated accents.",
+        "swatches": [
+            "#17081d",
+            "#270f30",
+            "#f43f5e",
+            "#fb923c"
+        ]
+    },
+    {
+        "id": "cosmic-fuchsia",
+        "name": "Cosmic Fuchsia",
+        "category": "vibrant",
+        "categoryLabel": "Vibrant & Neon",
+        "desc": "High-energy glowing gradients and hyper-saturated accents.",
+        "swatches": [
+            "#18031d",
+            "#280730",
+            "#ec4899",
+            "#c084fc"
+        ]
+    },
+    {
+        "id": "solar-flare",
+        "name": "Solar Flare",
+        "category": "vibrant",
+        "categoryLabel": "Vibrant & Neon",
+        "desc": "High-energy glowing gradients and hyper-saturated accents.",
+        "swatches": [
+            "#180900",
+            "#2b1100",
+            "#f59e0b",
+            "#ef4444"
+        ]
+    },
+    {
+        "id": "electric-mint",
+        "name": "Electric Mint",
+        "category": "vibrant",
+        "categoryLabel": "Vibrant & Neon",
+        "desc": "High-energy glowing gradients and hyper-saturated accents.",
+        "swatches": [
+            "#011411",
+            "#03211c",
+            "#34d399",
+            "#2dd4bf"
+        ]
+    },
+    {
+        "id": "vaporwave-80s",
+        "name": "Vaporwave 80s",
+        "category": "vibrant",
+        "categoryLabel": "Vibrant & Neon",
+        "desc": "High-energy glowing gradients and hyper-saturated accents.",
+        "swatches": [
+            "#170d2b",
+            "#241442",
+            "#ff71ce",
+            "#01cdfe"
+        ]
     }
 ];
 
@@ -1834,7 +2025,20 @@ function setupTemplates() {
         });
     }
 
-    // 4. Initial render of the grid
+    // 4. Delegated click listener on templates grid
+    const grid = document.getElementById('templatesGrid');
+    if (grid) {
+        grid.addEventListener('click', (e) => {
+            const card = e.target.closest('.template-card');
+            if (!card) return;
+            const themeId = card.getAttribute('data-id');
+            if (themeId) {
+                applyTemplate(themeId, true);
+            }
+        });
+    }
+
+    // 5. Initial render of the grid
     renderTemplatesGrid();
 }
 
@@ -1843,7 +2047,11 @@ function applyTemplate(themeId, showNotification = true) {
     const resolvedId = valid ? themeId : 'obsidian-pro';
     const themeObj = valid || PORTFOLIO_TEMPLATES[0];
 
+    // Set data-theme on html, body, and all main containers
     document.documentElement.setAttribute('data-theme', resolvedId);
+    if (document.body) {
+        document.body.setAttribute('data-theme', resolvedId);
+    }
     localStorage.setItem('portfolioTemplate', resolvedId);
 
     // Update active state in grid cards
@@ -1865,9 +2073,12 @@ function applyTemplate(themeId, showNotification = true) {
     });
 
     if (showNotification) {
-        showToast(`Template changed to "${themeObj.name}"!`, 'success');
+        showToast(`Template switched to "${themeObj.name}"!`, 'success');
     }
 }
+
+// Expose globally to window
+window.applyTemplate = applyTemplate;
 
 function renderTemplatesGrid() {
     const grid = document.getElementById('templatesGrid');
@@ -1881,7 +2092,8 @@ function renderTemplatesGrid() {
         const matchesSearch = !currentTemplateSearchQuery || 
             tpl.name.toLowerCase().includes(currentTemplateSearchQuery) ||
             tpl.categoryLabel.toLowerCase().includes(currentTemplateSearchQuery) ||
-            tpl.desc.toLowerCase().includes(currentTemplateSearchQuery);
+            tpl.desc.toLowerCase().includes(currentTemplateSearchQuery) ||
+            tpl.id.toLowerCase().includes(currentTemplateSearchQuery);
         return matchesCategory && matchesSearch;
     });
 
@@ -1909,7 +2121,7 @@ function renderTemplatesGrid() {
         `).join('');
 
         return `
-            <div class="template-card ${isActive ? 'active-theme' : ''}" data-id="${tpl.id}" onclick="applyTemplate('${tpl.id}')">
+            <div class="template-card ${isActive ? 'active-theme' : ''}" data-id="${tpl.id}">
                 <div class="template-card-header">
                     <div class="template-swatches-row">
                         ${swatchesHtml}

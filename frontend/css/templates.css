@@ -1,25 +1,33 @@
-﻿/* =========================================================
+/* =========================================================
    PORTFOLIO GENERATOR - 40 THEME TEMPLATES ENGINE
    Includes Gallery Modal Styles + 40 Curated Theme Palettes
    ========================================================= */
 
-/* Template Modal Overrides */
-.template-modal {
-    max-width: 1050px !important;
+/* Template Modal Window & Backdrop */
+.template-modal-card {
+    max-width: 1080px !important;
     width: 95% !important;
     max-height: 90vh !important;
     display: flex;
     flex-direction: column;
+    padding: 28px !important;
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-hover) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
 }
 
-.template-gallery-header {
-    margin-bottom: 20px;
+.template-gallery-subtitle {
+    color: var(--text-mid);
+    font-size: 0.92rem;
+    margin-bottom: 18px;
 }
 
-.template-search-row {
+/* Controls Bar: Search & Count */
+.template-controls-bar {
     display: flex;
-    gap: 12px;
-    margin: 16px 0 12px 0;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 14px;
     flex-wrap: wrap;
 }
 
@@ -35,39 +43,53 @@
     top: 50%;
     transform: translateY(-50%);
     color: var(--text-dim);
+    font-size: 0.95rem;
 }
 
-.template-search-input {
+.template-search-box input {
     width: 100%;
-    padding: 10px 14px 10px 38px;
-    background: rgba(255, 255, 255, 0.04);
+    padding: 10px 14px 10px 40px;
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-md);
     color: var(--text-high);
     font-size: 0.9rem;
     font-family: var(--font-sans);
+    outline: none;
     transition: var(--transition);
 }
 
-.template-search-input:focus {
-    outline: none;
+.template-search-box input:focus {
     border-color: var(--primary);
-    background: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.template-count-badge {
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-mid);
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
 }
 
 /* Category Filter Tabs */
-.template-category-nav {
+.template-filter-tabs {
     display: flex;
     gap: 8px;
     overflow-x: auto;
-    padding-bottom: 6px;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
     scrollbar-width: thin;
 }
 
-.template-cat-pill {
-    padding: 6px 14px;
-    font-size: 0.8rem;
-    font-weight: 500;
+.tpl-filter-btn {
+    padding: 7px 16px;
+    font-size: 0.82rem;
+    font-weight: 600;
     border-radius: var(--radius-full);
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-subtle);
@@ -77,28 +99,31 @@
     transition: var(--transition);
 }
 
-.template-cat-pill:hover,
-.template-cat-pill.active {
+.tpl-filter-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-high);
+    border-color: var(--border-hover);
+}
+
+.tpl-filter-btn.active {
     background: var(--primary);
     border-color: var(--primary);
     color: #ffffff;
+    box-shadow: 0 0 14px var(--primary-glow);
 }
 
-/* Gallery Grid */
-.template-grid-scroll {
-    overflow-y: auto;
-    max-height: 58vh;
-    padding-right: 6px;
-    margin-top: 10px;
-}
-
-.template-cards-grid {
+/* Template Cards Grid */
+.template-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
     gap: 16px;
+    overflow-y: auto;
+    max-height: 52vh;
+    padding-right: 8px;
+    padding-bottom: 8px;
 }
 
-/* Template Card */
+/* Individual Template Card */
 .template-card {
     background: var(--bg-card);
     border: 1px solid var(--border-subtle);
@@ -108,105 +133,105 @@
     transition: var(--transition);
     display: flex;
     flex-direction: column;
+    padding: 16px;
     position: relative;
 }
 
 .template-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     border-color: var(--primary);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
 }
 
-.template-card.is-active {
-    border-color: var(--secondary);
-    box-shadow: 0 0 16px var(--secondary-glow);
+.template-card.active-theme {
+    border-color: var(--secondary) !important;
+    box-shadow: 0 0 20px var(--secondary-glow) !important;
+    background: var(--bg-card-hover) !important;
 }
 
-.template-card-preview {
-    height: 80px;
+.template-card-header {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 10px;
-    position: relative;
-    border-bottom: 1px solid var(--border-subtle);
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
 }
 
-.template-swatch-row {
+.template-swatches-row {
     display: flex;
     gap: 6px;
-    align-items: center;
 }
 
 .template-swatch {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    border: 2px solid rgba(0, 0, 0, 0.4);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.template-category-tag {
+    font-size: 0.68rem;
+    font-family: var(--font-mono);
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.template-card-body {
+    flex: 1;
+    margin-bottom: 12px;
+}
+
+.template-name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.template-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-high);
+    margin: 0;
 }
 
 .template-active-badge {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: var(--secondary);
-    color: #000;
     font-size: 0.65rem;
     font-weight: 700;
     padding: 3px 8px;
     border-radius: var(--radius-full);
+    background: var(--secondary);
+    color: #000;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    display: none;
 }
 
-.template-card.is-active .template-active-badge {
-    display: inline-block;
-}
-
-.template-card-info {
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-.template-card-title {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--text-high);
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.template-card-desc {
-    font-size: 0.75rem;
+.template-desc {
+    font-size: 0.78rem;
     color: var(--text-low);
-    line-height: 1.3;
-    margin-bottom: 10px;
-    flex: 1;
+    line-height: 1.4;
+    margin: 0;
 }
 
 .template-card-footer {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 8px;
+    justify-content: flex-end;
     border-top: 1px solid var(--border-subtle);
+    padding-top: 10px;
 }
 
-.template-cat-tag {
-    font-size: 0.68rem;
-    color: var(--text-dim);
-    font-family: var(--font-mono);
-}
-
-.btn-apply-template {
-    padding: 4px 10px;
-    font-size: 0.75rem;
+.template-apply-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border-subtle);
     background: rgba(255, 255, 255, 0.05);
@@ -215,18 +240,18 @@
     transition: var(--transition);
 }
 
-.btn-apply-template:hover {
+.template-card:hover .template-apply-btn {
     background: var(--primary);
     border-color: var(--primary);
-    color: #fff;
+    color: #ffffff;
 }
 
-.template-card.is-active .btn-apply-template {
-    background: var(--secondary);
-    border-color: var(--secondary);
-    color: #000;
-    font-weight: 600;
+.template-card.active-theme .template-apply-btn {
+    background: var(--secondary) !important;
+    border-color: var(--secondary) !important;
+    color: #000000 !important;
 }
+
 
 /* =========================================================
    THE 40 THEME PALETTES (DATA-THEME SELECTORS)
@@ -235,7 +260,7 @@
 /* --- GROUP 1: MODERN DARK DEVELOPER (10) --- */
 
 /* 1. Obsidian Pro (Default) */
-[data-theme="obsidian-pro"] {
+:root[data-theme="obsidian-pro"], html[data-theme="obsidian-pro"], body[data-theme="obsidian-pro"] {
     --bg-base: #080b11;
     --bg-surface: #0e1420;
     --bg-card: rgba(16, 23, 38, 0.85);
@@ -257,7 +282,7 @@
 }
 
 /* 2. Tokyo Night */
-[data-theme="tokyo-night"] {
+:root[data-theme="tokyo-night"], html[data-theme="tokyo-night"], body[data-theme="tokyo-night"] {
     --bg-base: #1a1b26;
     --bg-surface: #24283b;
     --bg-card: rgba(36, 40, 59, 0.85);
@@ -279,7 +304,7 @@
 }
 
 /* 3. Dracula Midnight */
-[data-theme="dracula-midnight"] {
+:root[data-theme="dracula-midnight"], html[data-theme="dracula-midnight"], body[data-theme="dracula-midnight"] {
     --bg-base: #1e1f29;
     --bg-surface: #282a36;
     --bg-card: rgba(40, 42, 54, 0.85);
@@ -301,7 +326,7 @@
 }
 
 /* 4. One Dark Pro */
-[data-theme="one-dark-pro"] {
+:root[data-theme="one-dark-pro"], html[data-theme="one-dark-pro"], body[data-theme="one-dark-pro"] {
     --bg-base: #21252b;
     --bg-surface: #282c34;
     --bg-card: rgba(40, 44, 52, 0.88);
@@ -323,7 +348,7 @@
 }
 
 /* 5. Nord Frost */
-[data-theme="nord-frost"] {
+:root[data-theme="nord-frost"], html[data-theme="nord-frost"], body[data-theme="nord-frost"] {
     --bg-base: #242933;
     --bg-surface: #2e3440;
     --bg-card: rgba(46, 52, 64, 0.88);
@@ -345,7 +370,7 @@
 }
 
 /* 6. Deep Space Nebula */
-[data-theme="deep-space"] {
+:root[data-theme="deep-space"], html[data-theme="deep-space"], body[data-theme="deep-space"] {
     --bg-base: #060913;
     --bg-surface: #0c1222;
     --bg-card: rgba(14, 20, 38, 0.85);
@@ -367,7 +392,7 @@
 }
 
 /* 7. Moonlight Slate */
-[data-theme="moonlight-slate"] {
+:root[data-theme="moonlight-slate"], html[data-theme="moonlight-slate"], body[data-theme="moonlight-slate"] {
     --bg-base: #11141a;
     --bg-surface: #181d26;
     --bg-card: rgba(24, 29, 38, 0.85);
@@ -389,7 +414,7 @@
 }
 
 /* 8. Midnight Cobalt */
-[data-theme="midnight-cobalt"] {
+:root[data-theme="midnight-cobalt"], html[data-theme="midnight-cobalt"], body[data-theme="midnight-cobalt"] {
     --bg-base: #050d1a;
     --bg-surface: #0a1931;
     --bg-card: rgba(12, 29, 58, 0.85);
@@ -411,7 +436,7 @@
 }
 
 /* 9. Cyber Charcoal */
-[data-theme="cyber-charcoal"] {
+:root[data-theme="cyber-charcoal"], html[data-theme="cyber-charcoal"], body[data-theme="cyber-charcoal"] {
     --bg-base: #121214;
     --bg-surface: #1a1a1e;
     --bg-card: rgba(28, 28, 33, 0.88);
@@ -433,7 +458,7 @@
 }
 
 /* 10. Eclipse Black (Pure OLED) */
-[data-theme="eclipse-black"] {
+:root[data-theme="eclipse-black"], html[data-theme="eclipse-black"], body[data-theme="eclipse-black"] {
     --bg-base: #000000;
     --bg-surface: #0a0a0a;
     --bg-card: rgba(18, 18, 18, 0.9);
@@ -457,7 +482,7 @@
 /* --- GROUP 2: CYBERPUNK & RETRO TECH (8) --- */
 
 /* 11. Cyberpunk 2077 */
-[data-theme="cyberpunk-2077"] {
+:root[data-theme="cyberpunk-2077"], html[data-theme="cyberpunk-2077"], body[data-theme="cyberpunk-2077"] {
     --bg-base: #0d0221;
     --bg-surface: #19053b;
     --bg-card: rgba(28, 8, 64, 0.85);
@@ -479,7 +504,7 @@
 }
 
 /* 12. Synthwave Sunset */
-[data-theme="synthwave-sunset"] {
+:root[data-theme="synthwave-sunset"], html[data-theme="synthwave-sunset"], body[data-theme="synthwave-sunset"] {
     --bg-base: #1a0b2e;
     --bg-surface: #261245;
     --bg-card: rgba(43, 19, 77, 0.85);
@@ -501,7 +526,7 @@
 }
 
 /* 13. Matrix Terminal (Phosphor Green) */
-[data-theme="matrix-terminal"] {
+:root[data-theme="matrix-terminal"], html[data-theme="matrix-terminal"], body[data-theme="matrix-terminal"] {
     --bg-base: #030a04;
     --bg-surface: #061508;
     --bg-card: rgba(8, 28, 12, 0.88);
@@ -523,7 +548,7 @@
 }
 
 /* 14. Amber Vintage Terminal */
-[data-theme="amber-crt"] {
+:root[data-theme="amber-crt"], html[data-theme="amber-crt"], body[data-theme="amber-crt"] {
     --bg-base: #0d0800;
     --bg-surface: #1a1002;
     --bg-card: rgba(33, 20, 4, 0.88);
@@ -545,7 +570,7 @@
 }
 
 /* 15. Cyan Circuit */
-[data-theme="cyan-circuit"] {
+:root[data-theme="cyan-circuit"], html[data-theme="cyan-circuit"], body[data-theme="cyan-circuit"] {
     --bg-base: #021217;
     --bg-surface: #041f26;
     --bg-card: rgba(6, 38, 48, 0.85);
@@ -567,7 +592,7 @@
 }
 
 /* 16. Electric Violet */
-[data-theme="electric-violet"] {
+:root[data-theme="electric-violet"], html[data-theme="electric-violet"], body[data-theme="electric-violet"] {
     --bg-base: #130324;
     --bg-surface: #20073b;
     --bg-card: rgba(42, 10, 77, 0.85);
@@ -589,7 +614,7 @@
 }
 
 /* 17. Hyperdrive Laser */
-[data-theme="hyperdrive-laser"] {
+:root[data-theme="hyperdrive-laser"], html[data-theme="hyperdrive-laser"], body[data-theme="hyperdrive-laser"] {
     --bg-base: #140505;
     --bg-surface: #240a0a;
     --bg-card: rgba(46, 13, 13, 0.85);
@@ -611,7 +636,7 @@
 }
 
 /* 18. Quantum Plasma */
-[data-theme="quantum-plasma"] {
+:root[data-theme="quantum-plasma"], html[data-theme="quantum-plasma"], body[data-theme="quantum-plasma"] {
     --bg-base: #030814;
     --bg-surface: #07122b;
     --bg-card: rgba(10, 26, 61, 0.85);
@@ -635,7 +660,7 @@
 /* --- GROUP 3: MINIMALIST & CLEAN LIGHT (8) --- */
 
 /* 19. Swiss Minimal White */
-[data-theme="swiss-minimal"] {
+:root[data-theme="swiss-minimal"], html[data-theme="swiss-minimal"], body[data-theme="swiss-minimal"] {
     --bg-base: #f8f9fa;
     --bg-surface: #ffffff;
     --bg-card: rgba(255, 255, 255, 0.95);
@@ -657,7 +682,7 @@
 }
 
 /* 20. Cupertino Clean */
-[data-theme="cupertino-clean"] {
+:root[data-theme="cupertino-clean"], html[data-theme="cupertino-clean"], body[data-theme="cupertino-clean"] {
     --bg-base: #f5f5f7;
     --bg-surface: #ffffff;
     --bg-card: rgba(255, 255, 255, 0.9);
@@ -679,7 +704,7 @@
 }
 
 /* 21. Monochrome Executive */
-[data-theme="monochrome-exec"] {
+:root[data-theme="monochrome-exec"], html[data-theme="monochrome-exec"], body[data-theme="monochrome-exec"] {
     --bg-base: #ffffff;
     --bg-surface: #f4f4f5;
     --bg-card: rgba(244, 244, 245, 0.95);
@@ -701,7 +726,7 @@
 }
 
 /* 22. Cloud Silver */
-[data-theme="cloud-silver"] {
+:root[data-theme="cloud-silver"], html[data-theme="cloud-silver"], body[data-theme="cloud-silver"] {
     --bg-base: #f1f5f9;
     --bg-surface: #ffffff;
     --bg-card: rgba(255, 255, 255, 0.9);
@@ -723,7 +748,7 @@
 }
 
 /* 23. Paper Ivory */
-[data-theme="paper-ivory"] {
+:root[data-theme="paper-ivory"], html[data-theme="paper-ivory"], body[data-theme="paper-ivory"] {
     --bg-base: #fbf7ee;
     --bg-surface: #fffdf9;
     --bg-card: rgba(255, 253, 249, 0.95);
@@ -745,7 +770,7 @@
 }
 
 /* 24. Nordic Birch */
-[data-theme="nordic-birch"] {
+:root[data-theme="nordic-birch"], html[data-theme="nordic-birch"], body[data-theme="nordic-birch"] {
     --bg-base: #f4f6f0;
     --bg-surface: #ffffff;
     --bg-card: rgba(255, 255, 255, 0.92);
@@ -767,7 +792,7 @@
 }
 
 /* 25. Soft Ash */
-[data-theme="soft-ash"] {
+:root[data-theme="soft-ash"], html[data-theme="soft-ash"], body[data-theme="soft-ash"] {
     --bg-base: #f0f2f5;
     --bg-surface: #ffffff;
     --bg-card: rgba(255, 255, 255, 0.92);
@@ -789,7 +814,7 @@
 }
 
 /* 26. Crisp Horizon */
-[data-theme="crisp-horizon"] {
+:root[data-theme="crisp-horizon"], html[data-theme="crisp-horizon"], body[data-theme="crisp-horizon"] {
     --bg-base: #f8fafc;
     --bg-surface: #ffffff;
     --bg-card: rgba(255, 255, 255, 0.92);
@@ -813,7 +838,7 @@
 /* --- GROUP 4: NATURE & WARM EARTH (6) --- */
 
 /* 27. Emerald Forest */
-[data-theme="emerald-forest"] {
+:root[data-theme="emerald-forest"], html[data-theme="emerald-forest"], body[data-theme="emerald-forest"] {
     --bg-base: #05140b;
     --bg-surface: #0a2414;
     --bg-card: rgba(12, 44, 25, 0.85);
@@ -835,7 +860,7 @@
 }
 
 /* 28. Gruvbox Warm Earth */
-[data-theme="gruvbox-earth"] {
+:root[data-theme="gruvbox-earth"], html[data-theme="gruvbox-earth"], body[data-theme="gruvbox-earth"] {
     --bg-base: #1d2021;
     --bg-surface: #282828;
     --bg-card: rgba(40, 40, 40, 0.88);
@@ -857,7 +882,7 @@
 }
 
 /* 29. Espresso Mocha */
-[data-theme="espresso-mocha"] {
+:root[data-theme="espresso-mocha"], html[data-theme="espresso-mocha"], body[data-theme="espresso-mocha"] {
     --bg-base: #18110b;
     --bg-surface: #241a12;
     --bg-card: rgba(43, 31, 22, 0.88);
@@ -879,7 +904,7 @@
 }
 
 /* 30. Bamboo Sage */
-[data-theme="bamboo-sage"] {
+:root[data-theme="bamboo-sage"], html[data-theme="bamboo-sage"], body[data-theme="bamboo-sage"] {
     --bg-base: #111a14;
     --bg-surface: #18261e;
     --bg-card: rgba(27, 43, 34, 0.85);
@@ -901,7 +926,7 @@
 }
 
 /* 31. Autumn Amber */
-[data-theme="autumn-amber"] {
+:root[data-theme="autumn-amber"], html[data-theme="autumn-amber"], body[data-theme="autumn-amber"] {
     --bg-base: #1c0e09;
     --bg-surface: #2b170f;
     --bg-card: rgba(48, 26, 17, 0.88);
@@ -923,7 +948,7 @@
 }
 
 /* 32. Desert Dune */
-[data-theme="desert-dune"] {
+:root[data-theme="desert-dune"], html[data-theme="desert-dune"], body[data-theme="desert-dune"] {
     --bg-base: #17120c;
     --bg-surface: #261e14;
     --bg-card: rgba(46, 36, 25, 0.85);
@@ -947,7 +972,7 @@
 /* --- GROUP 5: VIBRANT & GRADIENT AESTHETICS (8) --- */
 
 /* 33. RosÃ© Pine */
-[data-theme="rose-pine"] {
+:root[data-theme="rose-pine"], html[data-theme="rose-pine"], body[data-theme="rose-pine"] {
     --bg-base: #191724;
     --bg-surface: #1f1d2e;
     --bg-card: rgba(38, 35, 58, 0.85);
@@ -969,7 +994,7 @@
 }
 
 /* 34. Royal Velvet */
-[data-theme="royal-velvet"] {
+:root[data-theme="royal-velvet"], html[data-theme="royal-velvet"], body[data-theme="royal-velvet"] {
     --bg-base: #140728;
     --bg-surface: #220c42;
     --bg-card: rgba(43, 16, 82, 0.85);
@@ -991,7 +1016,7 @@
 }
 
 /* 35. Aurora Borealis */
-[data-theme="aurora-borealis"] {
+:root[data-theme="aurora-borealis"], html[data-theme="aurora-borealis"], body[data-theme="aurora-borealis"] {
     --bg-base: #06101e;
     --bg-surface: #0b1e38;
     --bg-card: rgba(14, 38, 71, 0.85);
@@ -1013,7 +1038,7 @@
 }
 
 /* 36. Sunset Horizon */
-[data-theme="sunset-horizon"] {
+:root[data-theme="sunset-horizon"], html[data-theme="sunset-horizon"], body[data-theme="sunset-horizon"] {
     --bg-base: #17081d;
     --bg-surface: #270f30;
     --bg-card: rgba(51, 20, 64, 0.85);
@@ -1035,7 +1060,7 @@
 }
 
 /* 37. Cosmic Fuchsia */
-[data-theme="cosmic-fuchsia"] {
+:root[data-theme="cosmic-fuchsia"], html[data-theme="cosmic-fuchsia"], body[data-theme="cosmic-fuchsia"] {
     --bg-base: #18031d;
     --bg-surface: #280730;
     --bg-card: rgba(53, 10, 64, 0.85);
@@ -1057,7 +1082,7 @@
 }
 
 /* 38. Solar Flare */
-[data-theme="solar-flare"] {
+:root[data-theme="solar-flare"], html[data-theme="solar-flare"], body[data-theme="solar-flare"] {
     --bg-base: #180900;
     --bg-surface: #2b1100;
     --bg-card: rgba(54, 22, 0, 0.85);
@@ -1079,7 +1104,7 @@
 }
 
 /* 39. Electric Mint */
-[data-theme="electric-mint"] {
+:root[data-theme="electric-mint"], html[data-theme="electric-mint"], body[data-theme="electric-mint"] {
     --bg-base: #011411;
     --bg-surface: #03211c;
     --bg-card: rgba(5, 43, 37, 0.85);
@@ -1101,7 +1126,7 @@
 }
 
 /* 40. Vaporwave 80s */
-[data-theme="vaporwave-80s"] {
+:root[data-theme="vaporwave-80s"], html[data-theme="vaporwave-80s"], body[data-theme="vaporwave-80s"] {
     --bg-base: #170d2b;
     --bg-surface: #241442;
     --bg-card: rgba(46, 26, 84, 0.85);
