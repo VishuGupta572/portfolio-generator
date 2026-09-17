@@ -614,6 +614,22 @@ h1, h2, h3, h4, h5, h6 {
     background: rgba(6, 182, 212, 0.08);
 }
 
+.skill-delete-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    margin-left: 6px;
+    padding: 0 3px;
+    transition: color 0.15s ease;
+}
+
+.skill-delete-btn:hover {
+    color: var(--danger);
+}
+
 /* Projects Grid */
 .projects-grid {
     display: grid;

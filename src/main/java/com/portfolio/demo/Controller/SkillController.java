@@ -17,12 +17,13 @@ public class SkillController {
     public Skill   addSkills(@RequestBody  SkillRequestDTO skillRequestDTO){
         return  skillService.addSkills(skillRequestDTO);
     }
-    @GetMapping("GetSkills")
-    public List<Skill>  GetSkills(@RequestParam SkillResponseDTO responseDTO){
-        return skillService.GetSkills(responseDTO);
+    @GetMapping({"GetSkills", "getallskills"})
+    public List<Skill> GetSkills(){
+        return skillService.GetSkills();
     }
-    @DeleteMapping("DeleteSkill")
-    public Skill  DeleteSkill(@RequestParam SkillRequestDTO skillRequestDTO){
-        return skillService.DeleteSkill(skillRequestDTO);
+
+    @DeleteMapping("DeleteSkill/{id}")
+    public void deleteSkill(@PathVariable Long id){
+        skillService.deleteSkillById(id);
     }
 }

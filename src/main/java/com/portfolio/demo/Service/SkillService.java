@@ -38,11 +38,12 @@ public class SkillService {
 
     }
 
-    public List<Skill> GetSkills(SkillResponseDTO responseDTO) {
+    public List<Skill> GetSkills() {
         return skillRespository.findAll();
     }
+
     @Transactional
-    public Skill DeleteSkill(SkillRequestDTO skillRequestDTO) {
-        return null;
+    public void deleteSkillById(Long id) {
+        skillRespository.deleteById(id);
     }
 }

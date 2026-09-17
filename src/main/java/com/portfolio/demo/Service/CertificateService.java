@@ -1,6 +1,7 @@
 package com.portfolio.demo.Service;
 
 import com.portfolio.demo.DTO.CertificateRequestDTO;
+import com.portfolio.demo.DTO.CertificateResponseDTO;
 import com.portfolio.demo.Entites.Certification;
 import com.portfolio.demo.Respository.CertificateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.cert.Certificate;
+import java.util.List;
 
 @Service
 public class CertificateService {
@@ -28,5 +30,9 @@ public class CertificateService {
 
 
 
+    }
+
+    public List<Certification> getallcertificate() {
+        return repository.findAll();
     }
 }

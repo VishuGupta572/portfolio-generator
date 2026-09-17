@@ -19,19 +19,14 @@ const API_BASE = '';
 
 let allProfiles = [];
 let allProjects = [];
+let allSkills = [];
 
-// Fallback profile details for Vishu Gupta when DB has no profiles
-const DEFAULT_VISHU_PROFILE = {
-    fullName: "Vishu Gupta",
-    headline: "Software Engineer | Backend & AI/ML Enthusiast",
-    bio: "Driven Software Engineer with strong foundations in Java, Spring Boot microservices, and relational database systems. Focused on building resilient backend architectures, optimizing API performance, and exploring Machine Learning pipelines.",
-    email: "vishugupta@example.com",
-    phoneNumber: "+91 XXXXXXXXXX",
-    location: "India",
-    resumeUrl: "",
-    githubUrl: "https://github.com",
-    linkedinUrl: "https://linkedin.com"
-};
+function setElemText(id, text) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.textContent = text !== null && text !== undefined ? text : '';
+    }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     initApp();
@@ -42,7 +37,7 @@ function initApp() {
     setupEventListeners();
     loadAllProfiles();
     loadAllProjects();
-    loadSavedSkills();
+    loadAllSkills();
 }
 
 /**
@@ -199,7 +194,6 @@ document.addEventListener('keydown', (e) => {
 // =========================================================
 // PROFILES API INTEGRATION
 // =========================================================
-
 /**
  * Fetch all profiles via GET /getallprofiles
  */
@@ -222,19 +216,19 @@ async function loadAllProfiles() {
         if (allProfiles && allProfiles.length > 0) {
             renderHeroProfile(allProfiles[0]);
         } else {
-            renderHeroProfile(DEFAULT_VISHU_PROFILE);
+            renderEmptyProfileState();
         }
 
         renderProfilesList(allProfiles);
     } catch (err) {
-        console.warn('Profiles load error (using fallback):', err);
-        renderHeroProfile(DEFAULT_VISHU_PROFILE);
+        console.warn('Profiles load error:', err);
+        renderEmptyProfileState();
         if (listContainer) {
             listContainer.innerHTML = `
                 <div style="grid-column: 1 / -1; text-align: center; padding: 36px; background: var(--bg-card); border: 1px dashed var(--border-subtle); border-radius: var(--radius-lg);">
-                    <p style="color: var(--text-low); margin-bottom: 12px;">No saved profiles in the database yet.</p>
+                    <p style="color: var(--text-low); margin-bottom: 12px;">No registered profiles in the database yet.</p>
                     <button class="btn btn-primary btn-sm" onclick="document.getElementById('addProfileModal').classList.add('active')">
-                        <i class="fa-solid fa-plus"></i> Add First Profile
+                        <i class="fa-solid fa-plus"></i> Add Profile
                     </button>
                 </div>
             `;
@@ -243,25 +237,103 @@ async function loadAllProfiles() {
 }
 
 /**
- * Populates the Hero & Contact section with the active profile
+ * Renders an empty placeholder state when no profile has been registered yet
+ */
+function renderEmptyProfileState() {
+    setElemText('navBrandName', 'Portfolio Generator');
+    setElemText('heroGreeting', 'Welcome to');
+    setElemText('heroFullName', 'Portfolio Generator');
+    setElemText('heroHeadlineText', 'Full-Stack Portfolio Platform');
+    setElemText('heroBio', 'No profile has been registered in the database yet. Click "+ Add Profile" in the navigation bar to register your name, headline, bio, contact details, and social links.');
+
+    const heroStatusText = document.getElementById('heroStatusText');
+    if (heroStatusText) heroStatusText.textContent = 'Setup Mode';
+
+    // Hide contact chips
+    ['heroEmailChip', 'heroPhoneChip', 'heroLocationChip', 'heroResumeBtn', 'heroGithubBtn', 'heroLinkedinBtn'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+
+    // Terminal preview
+    const terminalFields = document.getElementById('terminalFields');
+    if (terminalFields) {
+        terminalFields.innerHTML = `
+            <div><span class="code-fn">status</span>: <span class="code-str">"Waiting for registration..."</span>,</div>
+            <div><span class="code-fn">action</span>: <span class="code-str">"Click 'Add Profile' to register"</span>,</div>
+            <div><span class="code-fn">backendReady</span>: <span class="code-keyword">true</span></div>
+        `;
+    }
+
+    // About section
+    const aboutBioContent = document.getElementById('aboutBioContent');
+    if (aboutBioContent) {
+        aboutBioContent.innerHTML = `
+            <p style="color: var(--text-mid);">
+                No background bio available yet. As soon as you register a profile, your bio and experience will be retrieved from the database and displayed here.
+            </p>
+            <button class="btn btn-primary btn-sm" style="margin-top: 14px;" onclick="document.getElementById('addProfileModal').classList.add('active')">
+                <i class="fa-solid fa-user-plus"></i> Add Profile
+            </button>
+        `;
+    }
+
+    const noContactMsg = document.getElementById('noContactInfoMsg');
+    if (noContactMsg) noContactMsg.style.display = 'block';
+    ['directEmailLink', 'directLinkedinLink', 'directGithubLink', 'contactLocationItem'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+}
+
+/**
+ * Populates the Hero & Contact section strictly with the registered user profile from backend
  */
 function renderHeroProfile(profile) {
-    if (!profile) return;
+    if (!profile) {
+        renderEmptyProfileState();
+        return;
+    }
 
-    setElemText('heroFullName', profile.fullName || DEFAULT_VISHU_PROFILE.fullName);
-    setElemText('heroHeadline', profile.headline || DEFAULT_VISHU_PROFILE.headline);
-    setElemText('heroBio', profile.bio || DEFAULT_VISHU_PROFILE.bio);
-    setElemText('heroEmail', profile.email || DEFAULT_VISHU_PROFILE.email);
-    setElemText('heroPhone', profile.phoneNumber || DEFAULT_VISHU_PROFILE.phoneNumber);
-    setElemText('heroLocation', profile.location || DEFAULT_VISHU_PROFILE.location);
+    const name = (profile.fullName || '').trim() || 'Developer';
+    setElemText('navBrandName', name);
+    setElemText('heroGreeting', "Hi, I'm");
+    setElemText('heroFullName', name);
+    setElemText('heroHeadlineText', profile.headline || 'Software Engineer');
+    setElemText('heroBio', profile.bio || 'Software Engineer crafting solutions with modern technologies.');
 
-    // Compute initials for terminal preview
-    const name = (profile.fullName || DEFAULT_VISHU_PROFILE.fullName).trim();
-    const parts = name.split(/\s+/);
-    const initials = parts.length > 1
-        ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-        : name.slice(0, 2).toUpperCase();
-    setElemText('heroInitials', initials);
+    const heroStatusText = document.getElementById('heroStatusText');
+    if (heroStatusText) heroStatusText.textContent = 'Active Portfolio';
+
+    // Email
+    const emailChip = document.getElementById('heroEmailChip');
+    const heroEmail = document.getElementById('heroEmail');
+    if (profile.email && profile.email.trim()) {
+        if (heroEmail) heroEmail.textContent = profile.email;
+        if (emailChip) emailChip.style.display = 'inline-flex';
+    } else if (emailChip) {
+        emailChip.style.display = 'none';
+    }
+
+    // Phone
+    const phoneChip = document.getElementById('heroPhoneChip');
+    const heroPhone = document.getElementById('heroPhone');
+    if (profile.phoneNumber && profile.phoneNumber.trim()) {
+        if (heroPhone) heroPhone.textContent = profile.phoneNumber;
+        if (phoneChip) phoneChip.style.display = 'inline-flex';
+    } else if (phoneChip) {
+        phoneChip.style.display = 'none';
+    }
+
+    // Location
+    const locationChip = document.getElementById('heroLocationChip');
+    const heroLocation = document.getElementById('heroLocation');
+    if (profile.location && profile.location.trim()) {
+        if (heroLocation) heroLocation.textContent = profile.location;
+        if (locationChip) locationChip.style.display = 'inline-flex';
+    } else if (locationChip) {
+        locationChip.style.display = 'none';
+    }
 
     // Resume button
     const resumeBtn = document.getElementById('heroResumeBtn');
@@ -277,44 +349,113 @@ function renderHeroProfile(profile) {
     // GitHub button
     const githubBtn = document.getElementById('heroGithubBtn');
     if (githubBtn) {
-        const ghUrl = profile.githubUrl || 'https://github.com';
-        githubBtn.href = ghUrl;
-        githubBtn.style.display = 'inline-flex';
+        if (profile.githubUrl && profile.githubUrl.trim()) {
+            githubBtn.href = profile.githubUrl;
+            githubBtn.style.display = 'inline-flex';
+        } else {
+            githubBtn.style.display = 'none';
+        }
     }
 
     // LinkedIn button
     const linkedinBtn = document.getElementById('heroLinkedinBtn');
     if (linkedinBtn) {
-        const liUrl = profile.linkedinUrl || 'https://linkedin.com';
-        linkedinBtn.href = liUrl;
-        linkedinBtn.style.display = 'inline-flex';
+        if (profile.linkedinUrl && profile.linkedinUrl.trim()) {
+            linkedinBtn.href = profile.linkedinUrl;
+            linkedinBtn.style.display = 'inline-flex';
+        } else {
+            linkedinBtn.style.display = 'none';
+        }
     }
 
-    // Sync Contact Section values
+    // Terminal preview card
+    const parts = name.split(/\s+/);
+    const initials = parts.length > 1
+        ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+        : name.slice(0, 2).toUpperCase();
+
+    const terminalFields = document.getElementById('terminalFields');
+    if (terminalFields) {
+        terminalFields.innerHTML = `
+            <div><span class="code-fn">name</span>: <span class="code-str">"${escapeHtml(name)}"</span>,</div>
+            <div><span class="code-fn">role</span>: <span class="code-str">"${escapeHtml(profile.headline || '')}"</span>,</div>
+            <div><span class="code-fn">email</span>: <span class="code-str">"${escapeHtml(profile.email || '')}"</span>,</div>
+            <div><span class="code-fn">location</span>: <span class="code-str">"${escapeHtml(profile.location || '')}"</span>,</div>
+            <div><span class="code-fn">initials</span>: <span class="code-str">"${escapeHtml(initials)}"</span>,</div>
+            <div><span class="code-fn">verified</span>: <span class="code-keyword">true</span></div>
+        `;
+    }
+
+    // About section
+    const aboutBioContent = document.getElementById('aboutBioContent');
+    if (aboutBioContent) {
+        aboutBioContent.innerHTML = `
+            <p>${escapeHtml(profile.bio || 'No detailed bio provided yet.')}</p>
+        `;
+    }
+    const aboutHeadlineHighlight = document.getElementById('aboutHeadlineHighlight');
+    if (aboutHeadlineHighlight && profile.headline) {
+        aboutHeadlineHighlight.textContent = profile.headline;
+    }
+    const aboutRoleHighlight = document.getElementById('aboutRoleHighlight');
+    if (aboutRoleHighlight && profile.headline) {
+        aboutRoleHighlight.textContent = profile.headline.split('|')[0].trim();
+    }
+
+    // Sync Contact Section
+    const noContactMsg = document.getElementById('noContactInfoMsg');
+    let hasAnyContact = false;
+
     const contactEmailVal = document.getElementById('contactEmailVal');
     const directEmailLink = document.getElementById('directEmailLink');
-    if (contactEmailVal) {
-        contactEmailVal.textContent = profile.email || DEFAULT_VISHU_PROFILE.email;
-    }
-    if (directEmailLink) {
-        directEmailLink.href = `mailto:${profile.email || DEFAULT_VISHU_PROFILE.email}`;
-    }
-
-    const contactLocationVal = document.getElementById('contactLocationVal');
-    if (contactLocationVal) {
-        contactLocationVal.textContent = (profile.location || DEFAULT_VISHU_PROFILE.location) + ' • Open to Remote';
-    }
-
-    const directGithubLink = document.getElementById('directGithubLink');
-    if (directGithubLink && profile.githubUrl) {
-        directGithubLink.href = profile.githubUrl;
+    if (profile.email && profile.email.trim()) {
+        if (contactEmailVal) contactEmailVal.textContent = profile.email;
+        if (directEmailLink) {
+            directEmailLink.href = `mailto:${profile.email}`;
+            directEmailLink.style.display = 'flex';
+        }
+        hasAnyContact = true;
+    } else if (directEmailLink) {
+        directEmailLink.style.display = 'none';
     }
 
     const directLinkedinLink = document.getElementById('directLinkedinLink');
-    if (directLinkedinLink && profile.linkedinUrl) {
-        directLinkedinLink.href = profile.linkedinUrl;
+    if (profile.linkedinUrl && profile.linkedinUrl.trim()) {
+        if (directLinkedinLink) {
+            directLinkedinLink.href = profile.linkedinUrl;
+            directLinkedinLink.style.display = 'flex';
+        }
+        hasAnyContact = true;
+    } else if (directLinkedinLink) {
+        directLinkedinLink.style.display = 'none';
+    }
+
+    const directGithubLink = document.getElementById('directGithubLink');
+    if (profile.githubUrl && profile.githubUrl.trim()) {
+        if (directGithubLink) {
+            directGithubLink.href = profile.githubUrl;
+            directGithubLink.style.display = 'flex';
+        }
+        hasAnyContact = true;
+    } else if (directGithubLink) {
+        directGithubLink.style.display = 'none';
+    }
+
+    const contactLocationItem = document.getElementById('contactLocationItem');
+    const contactLocationVal = document.getElementById('contactLocationVal');
+    if (profile.location && profile.location.trim()) {
+        if (contactLocationVal) contactLocationVal.textContent = profile.location;
+        if (contactLocationItem) contactLocationItem.style.display = 'flex';
+        hasAnyContact = true;
+    } else if (contactLocationItem) {
+        contactLocationItem.style.display = 'none';
+    }
+
+    if (noContactMsg) {
+        noContactMsg.style.display = hasAnyContact ? 'none' : 'block';
     }
 }
+
 
 /**
  * Render Profiles list cards
@@ -914,17 +1055,108 @@ async function handleSearchProject(e) {
 // =========================================================
 // SKILLS API INTEGRATION (POST /addSkills)
 // =========================================================
+// =========================================================
+// SKILLS API INTEGRATION (GET /GetSkills, POST /addSkills, DELETE /DeleteSkill/{id})
+// =========================================================
 
 /**
- * Load and render custom added skills from local persistence
+ * Load and render all skills dynamically from GET /GetSkills backend API
  */
-function loadSavedSkills() {
-    try {
-        const saved = JSON.parse(localStorage.getItem('savedSkills') || '[]');
-        saved.forEach(skill => appendSkillToUI(skill));
-    } catch (e) {
-        console.warn('Could not load saved skills from storage', e);
+async function loadAllSkills() {
+    const container = document.getElementById('skillsContainer');
+    if (container) {
+        container.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-dim);">
+                <i class="fa-solid fa-circle-notch fa-spin fa-2x" style="color: var(--primary); margin-bottom: 12px;"></i>
+                <p>Retrieving skills from Spring Boot...</p>
+            </div>
+        `;
     }
+
+    try {
+        const response = await fetch(`${API_BASE}/GetSkills`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}: Failed to load skills`);
+        allSkills = await response.json();
+        renderSkillsContainer(allSkills);
+    } catch (err) {
+        console.warn('Skills load error:', err);
+        if (container) {
+            container.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: var(--bg-card); border: 1px dashed var(--border-subtle); border-radius: var(--radius-lg);">
+                    <p style="color: var(--text-low); margin-bottom: 14px;">No skills loaded from database.</p>
+                    <button class="btn btn-primary btn-sm" onclick="document.getElementById('addSkillModal').classList.add('active')">
+                        <i class="fa-solid fa-plus"></i> Add First Skill
+                    </button>
+                </div>
+            `;
+        }
+    }
+}
+
+/**
+ * Render dynamic skill cards grouped by category directly from backend response
+ */
+function renderSkillsContainer(skills) {
+    const container = document.getElementById('skillsContainer');
+    if (!container) return;
+
+    if (!skills || skills.length === 0) {
+        container.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 48px; background: var(--bg-card); border: 1px dashed var(--border-subtle); border-radius: var(--radius-lg);">
+                <i class="fa-solid fa-code fa-2x" style="color: var(--text-dim); margin-bottom: 14px;"></i>
+                <p style="color: var(--text-mid); margin-bottom: 14px;">No skills registered in the database yet.</p>
+                <button class="btn btn-primary btn-sm" onclick="document.getElementById('addSkillModal').classList.add('active')">
+                    <i class="fa-solid fa-plus"></i> Add Your First Skill
+                </button>
+            </div>
+        `;
+        return;
+    }
+
+    // Group skills by category
+    const categoriesMap = {};
+    skills.forEach(skill => {
+        const cat = (skill.category || 'General').trim();
+        if (!categoriesMap[cat]) {
+            categoriesMap[cat] = [];
+        }
+        categoriesMap[cat].push(skill);
+    });
+
+    const categoryKeys = Object.keys(categoriesMap);
+
+    container.innerHTML = categoryKeys.map(cat => {
+        const catSkills = categoriesMap[cat];
+        return `
+            <div class="skill-category-card" data-category="${escapeHtml(cat)}">
+                <div class="skill-cat-header">
+                    <div class="skill-cat-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <h3 class="skill-cat-title">${escapeHtml(cat)}</h3>
+                </div>
+                <div class="skill-chips">
+                    ${catSkills.map(s => {
+                        const iconClass = s.iconUrl && s.iconUrl.trim().startsWith('fa')
+                            ? escapeHtml(s.iconUrl.trim())
+                            : 'fa-solid fa-code';
+                        const profHtml = s.proficiency
+                            ? `<span class="proficiency-tag">${escapeHtml(s.proficiency)}</span>`
+                            : '';
+                        const deleteBtn = s.id
+                            ? `<button type="button" class="skill-delete-btn" onclick="deleteSkill(${s.id})" title="Delete Skill">&times;</button>`
+                            : '';
+                        return `
+                            <span class="skill-chip">
+                                <i class="${iconClass}" style="color: var(--secondary);"></i>
+                                <span>${escapeHtml(s.name)}</span>
+                                ${profHtml}
+                                ${deleteBtn}
+                            </span>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 /**
@@ -958,20 +1190,10 @@ async function handleAddSkill(e) {
         }
 
         const created = await response.json();
-        appendSkillToUI(created);
-
-        // Persist in local storage
-        try {
-            const saved = JSON.parse(localStorage.getItem('savedSkills') || '[]');
-            saved.push(created);
-            localStorage.setItem('savedSkills', JSON.stringify(saved));
-        } catch (storageErr) {
-            console.warn('Storage error', storageErr);
-        }
-
         showToast(`Skill "${created.name || payload.name}" saved to database!`, 'success');
         document.getElementById('addSkillForm').reset();
         document.getElementById('addSkillModal').classList.remove('active');
+        await loadAllSkills();
     } catch (err) {
         console.error('POST /addSkills error:', err);
         showToast(err.message || 'Error saving skill', 'error');
@@ -982,70 +1204,26 @@ async function handleAddSkill(e) {
 }
 
 /**
- * Append skill chip dynamically to corresponding category card
+ * Handle DELETE /DeleteSkill/{id}
  */
-function appendSkillToUI(skill) {
-    if (!skill || !skill.name) return;
-
-    const cat = (skill.category || '').toLowerCase();
-    let targetContainer = null;
-
-    if (cat.includes('lang')) {
-        targetContainer = document.getElementById('skills-languages');
-    } else if (cat.includes('back') || cat.includes('frame')) {
-        targetContainer = document.getElementById('skills-backend');
-    } else if (cat.includes('data') && (cat.includes('base') || cat.includes('persist'))) {
-        targetContainer = document.getElementById('skills-databases');
-    } else if (cat.includes('tool') || cat.includes('dev')) {
-        targetContainer = document.getElementById('skills-tools');
-    } else if (cat.includes('ai') || cat.includes('machine') || cat.includes('data science')) {
-        targetContainer = document.getElementById('skills-ai');
-    } else if (cat.includes('core') || cat.includes('comp')) {
-        targetContainer = document.getElementById('skills-core');
-    }
-
-    // If no matching predefined category, create or append to custom category card
-    if (!targetContainer) {
-        targetContainer = document.getElementById('skills-custom');
-        if (!targetContainer) {
-            const container = document.getElementById('skillsContainer');
-            if (container) {
-                const customCard = document.createElement('div');
-                customCard.className = 'skill-category-card';
-                customCard.innerHTML = `
-                    <div class="skill-cat-header">
-                        <div class="skill-cat-icon"><i class="fa-solid fa-shapes"></i></div>
-                        <h3 class="skill-cat-title">${escapeHtml(skill.category || 'Specialized Skills')}</h3>
-                    </div>
-                    <div class="skill-chips" id="skills-custom"></div>
-                `;
-                container.appendChild(customCard);
-                targetContainer = document.getElementById('skills-custom');
-            }
+window.deleteSkill = async function(id) {
+    if (!confirm('Are you sure you want to delete this skill?')) return;
+    try {
+        const response = await fetch(`${API_BASE}/DeleteSkill/${encodeURIComponent(id)}`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(errText || 'Failed to delete skill');
         }
+        showToast('Skill deleted from database', 'success');
+        await loadAllSkills();
+    } catch (err) {
+        console.error('Delete skill error:', err);
+        showToast('Error deleting skill from backend', 'error');
     }
+};
 
-    if (targetContainer) {
-        // Prevent duplicate rendering
-        const existing = Array.from(targetContainer.querySelectorAll('.skill-chip')).find(
-            chip => chip.textContent.toLowerCase().includes(skill.name.toLowerCase())
-        );
-        if (existing) return;
-
-        const iconHtml = skill.iconUrl && skill.iconUrl.startsWith('fa')
-            ? `<i class="${escapeHtml(skill.iconUrl)}" style="color: var(--secondary);"></i> `
-            : `<i class="fa-solid fa-code" style="color: var(--secondary);"></i> `;
-
-        const proficiencyHtml = skill.proficiency
-            ? `<span class="proficiency-tag">${escapeHtml(skill.proficiency)}</span>`
-            : '';
-
-        const chip = document.createElement('span');
-        chip.className = 'skill-chip skill-chip-new';
-        chip.innerHTML = `${iconHtml}${escapeHtml(skill.name)}${proficiencyHtml}`;
-        targetContainer.appendChild(chip);
-    }
-}
 
 // =========================================================
 // CONTACT & UTILITY FUNCTIONS
